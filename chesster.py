@@ -1,9 +1,9 @@
 from pprint import pprint
 
-def rctopos(rc): # Row Column
+def rctopos(rc='A2'): # Row Column
         columnID = {'a': 0, 'b': 1, 'c': 2, 'd':3, 'e':4, 'f': 5, 'g': 6, 'h': 7,\
          'A': 0, 'B': 1, 'C': 2, 'D':3, 'E':4, 'F': 5, 'G': 6, 'H': 7}
-        rowID = {1: 7, 2: 6, 3: 5, 4: 4, 5: 3, 6: 2, 7: 1, 8: 0}
+        rowID = {'1': 7, '2': 6, '3': 5, '4': 4, '5': 3, '6': 2, '7': 1, '8': 0}
         xpos = columnID[rc[0]]
         ypos = rowID[rc[1]]
         return ypos, xpos
