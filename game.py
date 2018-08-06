@@ -9,7 +9,7 @@ def options(usrin):
     elif usrin == 'fillTable':
         teibol.filltable()
     elif usrin == 'showTable':
-        teibol.showtable()
+        print(teibol.showtable())
     elif usrin == 'changeTeam':
         if teibol.curteam:
             teibol.curteam = False
