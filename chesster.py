@@ -138,6 +138,23 @@ class Piece(Space):
         else:
             self.icon = '.'
 
+    def availMoves(self, board):
+        return None, None
+
+    def move(self, board, ypos, xpos):
+        moves, kills = self.availMoves(board)
+        if (xpos, ypos) in moves or (xpos, ypos) in kills:
+            board[ypos][xpos] = self
+            board[self.y][self.x] = Space(self.x, self.y)
+            self.x = xpos
+            self.y = ypos
+            
+        elif (ypos, xpos) in kills:
+            board[ypos][xpos].die()
+            self.x = xpos
+            self.y = ypos
+
+
     def limitSide(self, board, side, speed=8):
         checkingpos = [self.y, self.x]
         spaces = []
@@ -245,19 +262,6 @@ class Peon(Piece):
         # kills = multipostorc(kills)
 
         return moves, kills
-    
-    def move(self, board, ypos, xpos):
-        moves, kills = self.availMoves(board)
-        if (xpos, ypos) in moves or (xpos, ypos) in kills:
-            board[ypos][xpos] = self
-            board[self.y][self.x] = Space(self.x, self.y)
-            self.x = xpos
-            self.y = ypos
-            
-        elif (ypos, xpos) in kills:
-            board[ypos][xpos].die()
-            self.x = xpos
-            self.y = ypos
 
 class Rook(Piece):
     def __init__(self, x, y, team, captured):
