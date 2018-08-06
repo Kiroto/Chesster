@@ -216,8 +216,6 @@ class Peon(Piece):
             board[ypos][xpos].die()
             self.x = xpos
             self.y = ypos
-        
-
 
 class Rook(Piece):
     def __init__(self, x, y, team, captured):
@@ -263,7 +261,20 @@ class Queen(Piece):
             moves.extend(sidelimit[0])
             kills.extend(sidelimit[1])
 
-        return moves, kills           
+        return moves, kills
+
+    def move(self, board, ypos, xpos):
+        moves, kills = self.availMoves(board)
+        if (ypos, xpos) in moves or (xpos, ypos) in kills:
+            board[ypos][xpos] = self
+            board[self.y][self.x] = Space(self.x, self.y)
+            self.x = xpos
+            self.y = ypos
+            
+        elif (ypos, xpos) in kills:
+            board[ypos][xpos].die()
+            self.x = xpos
+            self.y = ypos           
 
 # teibol.resettable()
 # teibol.filltable()
