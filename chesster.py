@@ -13,6 +13,12 @@ def postorc(posy, posx):
     posxID = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H'}
     return posxID[posx] + posyID[posy]
 
+def multipostorc(poss):
+    rcmove = []
+    for i in poss:
+        rcmove.append(postorc(i[0], i[1]))
+    return rcmove
+
 class Table:
     def __init__(self, scale=8):
         self.table = []
@@ -23,7 +29,7 @@ class Table:
         for i in range(8):
             self.table.append([])
             for k in range(8):
-                self.table[-1].append(Space(k, i))
+                self.table[-1].append(Space(i, k))
     
     def filltable(self):
         for i in range(len(self.table)):
@@ -78,7 +84,7 @@ class Table:
         return printtable
         
 class Space:
-    def __init__(self, x, y):
+    def __init__(self, y, x):
         self.x = x
         self.y = y
         if (x+1) % 2 == (y+1) % 2:
@@ -96,25 +102,25 @@ class Space:
         ans = 'This is a(n) ' + self.kind + ', and thus it is represented by ' + self.icon + '.\n'
         if 'x' in attribs and 'y' in attribs:
             ans += ' It is located at ' + postorc(self.y, self.x) + '.'
-        if self.team != None:
+        if self.team == None:
             ans += " It doesn't belong to a team."
         else:
             team = 'Black'
             if self.team:
                 team = 'White'
             ans += " It belongs to the " + team + " team."
-            if table != None:
-                moves, kills = self.availMoves(table)
-                rcmove = []
-                rckills = []
-                for i in moves:
-                    rcmove.append(postorc(i[0], i[1]))
-                for i in kills:
-                    rckills.append(postorc(i[0], i[1]))
-                if rcmove != []:
-                    ans += ' It can move to ' + str(rcmove)[1:-1] + '.'
-                if rckills != []:
-                    ans += ' It can kill at ' + str(rckills)[1:-1] + '.'
+            # if table != None:
+            #     moves, kills = self.availMoves(table)
+            #     rcmove = []
+            #     rckills = []
+            #     for i in moves:
+            #         rcmove.append(postorc(i[0], i[1]))
+            #     for i in kills:
+            #         rckills.append(postorc(i[0], i[1]))
+            #     if rcmove != []:
+            #         ans += ' It can move to ' + str(rcmove)[1:-1] + '.'
+            #     if rckills != []:
+            #         ans += ' It can kill at ' + str(rckills)[1:-1] + '.'
         return ans
 
 class Piece(Space):
@@ -142,9 +148,9 @@ class Piece(Space):
             cont = True
             checkedspace = board[checkingpos[0]][checkingpos[1]]
             if checkedspace.team == None:
-                spaces.append((checkedspace.y, checkedspace.x))
+                spaces.append((checkedspace.x, checkedspace.y))
             elif checkedspace.team != self.team:
-                kills.append((checkedspace.y, checkedspace.x))
+                kills.append((checkedspace.x, checkedspace.y))
                 cont = False
             else:
                 cont = False
@@ -228,18 +234,21 @@ class Peon(Piece):
         else: 
             side = 2
         if self.y == 1 and not self.team:
-            moves.append((self.y+2, self.x))
+            moves.append((self.x, self.y+2))
         elif self.y == 6 and self.team:
-            moves.append((self.y-2, self.x))
+            moves.append((self.x, self.y-2))
         moves.extend(self.limitSide(board, side, 1)[0])
         kills.extend(self.limitSide(board, side+1, 1)[1])
         kills.extend(self.limitSide(board, side-1, 1)[1])
+
+        # moves = multipostorc(moves)
+        # kills = multipostorc(kills)
 
         return moves, kills
     
     def move(self, board, ypos, xpos):
         moves, kills = self.availMoves(board)
-        if (ypos, xpos) in moves or (xpos, ypos) in kills:
+        if (xpos, ypos) in moves or (xpos, ypos) in kills:
             board[ypos][xpos] = self
             board[self.y][self.x] = Space(self.x, self.y)
             self.x = xpos
@@ -303,7 +312,7 @@ class Queen(Piece):
 
     def move(self, board, ypos, xpos):
         moves, kills = self.availMoves(board)
-        if (ypos, xpos) in moves or (xpos, ypos) in kills:
+        if (xpos, ypos) in moves or (xpos, ypos) in kills:
             board[ypos][xpos] = self
             board[self.y][self.x] = Space(self.x, self.y)
             self.x = xpos
@@ -312,11 +321,12 @@ class Queen(Piece):
         elif (ypos, xpos) in kills:
             board[ypos][xpos].die()
             self.x = xpos
-            self.y = ypos           
+            self.y = ypos         
 
+# teibol = Table()
 # teibol.resettable()
 # teibol.filltable()
 # print(teibol.showtable())
-# teibol.table[1][1].move(teibol.table, 2, 1)
+# teibol.table[1][1].move(teibol.table, 3, 1)
 # print(teibol.showtable())
 # teibol.table[3][1].descr()

@@ -61,13 +61,15 @@ def options(usrin):
             place = usrin[6:]
             froy, frox = chesster.rctopos(place)
             movements, assasinations = teibol.table[froy][frox].availMoves(teibol.table)
-            print('You can move to: ' + str(movements))
-            print('You can kill at: ' + str(assasinations))
+            print('It can move to: ' + str(chesster.multipostorc(movements)[1:-1]))
+            print('It can kill at: ' + str(chesster.multipostorc(assasinations)[1:-1]))
         except Exception as e:
             print('Something went wrong. Sorry bro!')
             print(str(e))
-    elif usrin[:4] == 'move':
-
+    elif usrin[:4] == 'move': # move A2 A4
+        piece = chesster.rctopos(usrin[5:7])
+        spot = chesster.rctopos(usrin[8:])
+        teibol.table[piece[0]][piece[1]].move(teibol.table, spot[0], spot[1])
         pass   
 
 while True: # Main loop
