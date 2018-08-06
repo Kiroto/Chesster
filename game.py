@@ -18,6 +18,12 @@ def options(usrin):
             print('Table Filled!')
         except:
             print('Something went wrong. Sorry bro!')
+    elif usrin == 'startup':
+        try:
+            teibol.resettable()
+            teibol.filltable()
+        except:
+            print('Something went wrong. Sorry bro!')
     elif usrin == 'showTable':
         try:
             print()
