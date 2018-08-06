@@ -5,26 +5,38 @@ teibol.filltable()
 
 def options(usrin):
     if usrin == 'resetTable':
-        teibol.resettable()
+        try:
+            teibol.resettable()
+            print()
+            print('Table Reset!')
+        except:
+            print('Something went wrong. Sorry bro!')
     elif usrin == 'fillTable':
-        teibol.filltable()
+        try:
+            teibol.filltable()
+            print()
+            print('Table Filled!')
+        except:
+            print('Something went wrong. Sorry bro!')
     elif usrin == 'showTable':
         try:
             print()
             print(teibol.showtable())
             print()
-            print('Table Shown')
+            print('Table Shown!')
         except:
             print('Something went wrong. Sorry bro!')
     elif usrin == 'changeTeam':
-        if teibol.curteam:
-            teibol.curteam = False
-        else:
-            teibol.curteam = True
+        try:
+            if teibol.curteam:
+                teibol.curteam = False
+            else:
+                teibol.curteam = True
+            print('Team Changed!')
+        except:
+            print('Something went wrong. Sorry bro!')
     elif usrin[:4] == 'move':
-        pass
-        
-    
+        pass   
 
 while True: # Main loop
     usrin = str(input())
