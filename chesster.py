@@ -270,6 +270,18 @@ class Rook(Piece):
         if self.team:
             self.icon = 'R'
         self.kind = 'Rook'
+    
+    def availMoves(self, board):
+        kills = []
+        moves = []
+
+        for i in range(1, 10):
+            if i % 2 == 0:
+                sidelimit = self.limitSide(board, i)
+                moves.extend(sidelimit[0])
+                kills.extend(sidelimit[1])
+
+        return moves, kills         
 
 class Horse(Piece):
     def __init__(self, x, y, team, captured):
@@ -278,6 +290,17 @@ class Horse(Piece):
         if self.team:
             self.icon = 'H'
         self.kind = 'Horse'
+    
+    def availMoves(self, board):
+        kills = []
+        moves = []
+
+        for i in range(1, 10):
+            sidelimit = self.limitSide(board, i)
+            moves.extend(sidelimit[0])
+            kills.extend(sidelimit[1])
+
+        return moves, kills         
 
 class Bishop(Piece):
     def __init__(self, x, y, team, captured):
@@ -287,6 +310,18 @@ class Bishop(Piece):
             self.icon = 'B'
         self.kind = 'Bishop'
 
+    def availMoves(self, board):
+        kills = []
+        moves = []
+
+        for i in range(1, 10):
+            if i % 2 != 0:
+                sidelimit = self.limitSide(board, i)
+                moves.extend(sidelimit[0])
+                kills.extend(sidelimit[1])
+
+        return moves, kills
+
 class King(Piece):
     def __init__(self, x, y, team, captured):
         Piece.__init__(self, x, y, team, captured)
@@ -294,6 +329,17 @@ class King(Piece):
         if self.team:
             self.icon = 'K'
         self.kind = 'King'
+
+    def availMoves(self, board):
+        kills = []
+        moves = []
+
+        for i in range(1, 10):
+            sidelimit = self.limitSide(board, i, 1)
+            moves.extend(sidelimit[0])
+            kills.extend(sidelimit[1])
+
+        return moves, kills
 
 class Queen(Piece):
     def __init__(self, x, y, team, captured):
@@ -312,20 +358,7 @@ class Queen(Piece):
             moves.extend(sidelimit[0])
             kills.extend(sidelimit[1])
 
-        return moves, kills
-
-    def move(self, board, ypos, xpos):
-        moves, kills = self.availMoves(board)
-        if (xpos, ypos) in moves or (xpos, ypos) in kills:
-            board[ypos][xpos] = self
-            board[self.y][self.x] = Space(self.x, self.y)
-            self.x = xpos
-            self.y = ypos
-            
-        elif (ypos, xpos) in kills:
-            board[ypos][xpos].die()
-            self.x = xpos
-            self.y = ypos         
+        return moves, kills         
 
 # teibol = Table()
 # teibol.resettable()
