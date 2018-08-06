@@ -114,7 +114,7 @@ class Space:
                 if rcmove != []:
                     ans += ' It can move to ' + str(rcmove)[1:-1] + '.'
                 if rckills != []:
-                    ans += ' It can kill at ' + str(rckills)[1:-1] + '0'
+                    ans += ' It can kill at ' + str(rckills)[1:-1] + '.'
         return ans
 
 class Piece(Space):
