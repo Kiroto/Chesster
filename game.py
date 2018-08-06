@@ -76,10 +76,11 @@ def options(usrin):
         piece = chesster.rctopos(usrin[5:7])
         spot = chesster.rctopos(usrin[8:])
         teibol.table[piece[0]][piece[1]].move(teibol.table, spot[0], spot[1])
-        teibol.showtable()
+        print(teibol.showtable())
 
+options('help')
 while True: # Main loop
-    print('You may now insert your next command')
+    print('You may now insert your next command (or help).')
     usrin = str(input())
     if usrin == 'exit':
         break
