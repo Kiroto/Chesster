@@ -1,8 +1,11 @@
 from pprint import pprint
 
+curteam = True
+
 class Table:
     def __init__(self, scale=8):
         self.table = []
+        self.curteam = True
     
     def resettable(self):
         self.table = []
@@ -62,18 +65,6 @@ class Table:
             printtable += '\n'
             # printtable += '|\n+' + '-+' * 7 + '-+\n'
         return printtable
-
-
-#[
-# ['r', 'h', 'b', 'q', 'k', 'b', 'h', 'r'],
-# ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
-# ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'],
-# ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'],
-# ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'],
-# ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'],
-# ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
-# ['R', 'H', 'B', 'Q', 'K', 'B', 'H', 'R'],
-#]
         
 class Space:
     def __init__(self, x, y):
@@ -84,7 +75,14 @@ class Space:
         else:
             self.icon = '#'
         self.team = None
-    
+    def rctopos(self, rc): # Row Column
+        columnID = {'a': 0, 'b': 1, 'c': 2, 'd':3, 'e':4, 'f': 5, 'g': 6, 'h': 7,\
+         'A': 0, 'B': 1, 'C': 2, 'D':3, 'E':4, 'F': 5, 'G': 6, 'H': 7}
+        rowID = {1: 7, 2: 6, 3:5, 4:4, 5:3, 6:2, 7:1, 8:0}
+        xpos = columnID[rc[0]]
+        ypos = rowID[rc[1]]
+        return (ypos, xpos)
+
     def descr(self):
         pprint(vars(self))
 
@@ -99,9 +97,9 @@ class Piece(Space):
         self.captured = True
         self.team = None
         if (self.x+1) % 2 == (self.y+1) % 2:
-            self.icon = '.'
-        else:
             self.icon = '#'
+        else:
+            self.icon = '.'
 
     def limitSide(self, board, side, speed=8):
         checkingpos = [self.y, self.x]
@@ -268,10 +266,9 @@ class Queen(Piece):
 
         return moves, kills           
 
-teibol = Table()
-teibol.resettable()
-teibol.filltable()
-print(teibol.showtable())
-teibol.table[1][1].move(teibol.table, 2, 1)
-print(teibol.showtable())
-teibol.table[3][1].descr()
+# teibol.resettable()
+# teibol.filltable()
+# print(teibol.showtable())
+# teibol.table[1][1].move(teibol.table, 2, 1)
+# print(teibol.showtable())
+# teibol.table[3][1].descr()
