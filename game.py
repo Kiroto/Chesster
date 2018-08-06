@@ -35,7 +35,17 @@ def options(usrin):
             print('Team Changed!')
         except:
             print('Something went wrong. Sorry bro!')
+    elif usrin[:5] == 'moves': # Ex input: moves A2
+        try:
+            print()
+            frompos = chesster.rctopos(usrin[6:8])
+            movements, assasinations = teibol.table[frompos[0]][frompos[1]].availMoves(teibol.table)
+            print('You can move to: ' + movements)
+            print('You can kill at: ' + assasinations)
+        except:
+            print('Something went wrong. Sorry bro!')
     elif usrin[:4] == 'move':
+
         pass   
 
 while True: # Main loop
