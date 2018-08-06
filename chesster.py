@@ -6,7 +6,7 @@ def rctopos(rc): # Row Column
         rowID = {1: 7, 2: 6, 3: 5, 4: 4, 5: 3, 6: 2, 7: 1, 8: 0}
         xpos = columnID[rc[0]]
         ypos = rowID[rc[1]]
-        return (ypos, xpos)
+        return ypos, xpos
 
 class Table:
     def __init__(self, scale=8):
