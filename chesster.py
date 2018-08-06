@@ -88,7 +88,10 @@ class Space:
         self.team = None
         self.kind = 'Empty'
 
-    def descr(self):
+    def availMoves(self, board):
+        return [], []
+
+    def descr(self, table=None):
         attribs = vars(self)
         ans = 'This is a(n) ' + self.kind + ', and thus it is represented by ' + self.icon + '.\n'
         if 'x' in attribs and 'y' in attribs:
@@ -100,6 +103,19 @@ class Space:
             if self.team:
                 team = 'White'
             ans += " It belongs to the " + team + " team."
+            if table != None:
+                moves, kills = self.availMoves(table)
+                rcmove = []
+                rckills = []
+                for i in moves:
+                    rcmove.append(postorc(i[0], i[1]))
+                for i in kills:
+                    rckills.append(postorc(i[0], i[1]))
+                if rcmove != []:
+                    ans += ' It can move to ' + str(rcmove)[1:-1] + '.'
+                if rckills != []:
+                    ans += ' It can kill at ' + str(rckills)[1:-1] + '0'
+        return ans
 
 class Piece(Space):
     """Represents a piece of either team"""
