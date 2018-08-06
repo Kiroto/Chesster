@@ -46,13 +46,23 @@ def options(usrin):
         except Exception as e:
             print('Something went wrong. Sorry bro!')
             print(str(e))
+    elif usrin[:7] == 'what is':
+        try:
+            print()
+            place = usrin[8:]
+            froy, frox = chesster.rctopos(place)
+            print(teibol.table[froy][frox].descr())
+        except Exception as e:
+            print('Something went wrong. Sorry bro!')
+            print(str(e))
     elif usrin[:5] == 'moves': # Ex input: moves A2
         try:
             print()
-            frompos = chesster.rctopos(usrin[6:-1])
-            movements, assasinations = teibol.table[frompos[0]][frompos[1]].availMoves(teibol.table)
-            print('You can move to: ' + movements)
-            print('You can kill at: ' + assasinations)
+            place = usrin[6:]
+            froy, frox = chesster.rctopos(place)
+            movements, assasinations = teibol.table[froy][frox].availMoves(teibol.table)
+            print('You can move to: ' + str(movements))
+            print('You can kill at: ' + str(assasinations))
         except Exception as e:
             print('Something went wrong. Sorry bro!')
             print(str(e))
