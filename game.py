@@ -51,7 +51,7 @@ def options(usrin):
             print()
             place = usrin[8:]
             froy, frox = chesster.rctopos(place)
-            print(teibol.table[froy][frox].descr())
+            print(teibol.table[froy][frox].descr(teibol))
         except Exception as e:
             print('Something went wrong. Sorry bro!')
             print(str(e))
