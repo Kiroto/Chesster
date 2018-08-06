@@ -83,7 +83,7 @@ class Space:
         self.team = None
 
     def descr(self):
-        pprint(vars(self))
+        return (vars(self))
 
 class Piece(Space):
     """Represents a piece of either team"""
