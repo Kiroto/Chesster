@@ -12,6 +12,12 @@ def options(usrin):
         except Exception as e:
             print('Something went wrong. Sorry bro!')
             print(str(e))
+    elif usrin == 'help':
+        print()
+        print('You may issue the commands:')
+        print('resetTable, fillTable, startup, showTable, changeTeam')
+        print('what is (piece), moves (piece), move (piece) (place)')
+        print()
     elif usrin == 'fillTable':
         try:
             teibol.filltable()
@@ -70,9 +76,10 @@ def options(usrin):
         piece = chesster.rctopos(usrin[5:7])
         spot = chesster.rctopos(usrin[8:])
         teibol.table[piece[0]][piece[1]].move(teibol.table, spot[0], spot[1])
-        pass   
+        teibol.showtable()
 
 while True: # Main loop
+    print('You may now insert your next command')
     usrin = str(input())
     if usrin == 'exit':
         break
