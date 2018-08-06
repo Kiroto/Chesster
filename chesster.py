@@ -1,12 +1,15 @@
 from pprint import pprint
 
-def rctopos(rc='A2'): # Row Column
+def rctopos(rc): # Row Column
         columnID = {'a': 0, 'b': 1, 'c': 2, 'd':3, 'e':4, 'f': 5, 'g': 6, 'h': 7,\
          'A': 0, 'B': 1, 'C': 2, 'D':3, 'E':4, 'F': 5, 'G': 6, 'H': 7}
         rowID = {'1': 7, '2': 6, '3': 5, '4': 4, '5': 3, '6': 2, '7': 1, '8': 0}
         xpos = columnID[rc[0]]
         ypos = rowID[rc[1]]
         return ypos, xpos
+
+def postorc(posy, posx):
+    pass
 
 class Table:
     def __init__(self, scale=8):
@@ -81,9 +84,12 @@ class Space:
         else:
             self.icon = '#'
         self.team = None
+        self.kind = 'Empty'
 
     def descr(self):
-        return (vars(self))
+        attribs = vars(self)
+        if 'x' in attribs and 'y' in attribs:
+            pass
 
 class Piece(Space):
     """Represents a piece of either team"""
@@ -183,6 +189,7 @@ class Piece(Space):
 class Peon(Piece):
     def __init__(self, x, y, team, captured):
         Piece.__init__(self, x, y, team, captured)
+        self.kind = 'Peon'
         self.icon = 'p'
         if self.team:
             self.icon = 'P'
@@ -223,6 +230,7 @@ class Rook(Piece):
         self.icon = 'r'
         if self.team:
             self.icon = 'R'
+        self.kind = 'Rook'
 
 class Horse(Piece):
     def __init__(self, x, y, team, captured):
@@ -230,6 +238,7 @@ class Horse(Piece):
         self.icon = 'h'
         if self.team:
             self.icon = 'H'
+        self.kind = 'Horse'
 
 class Bishop(Piece):
     def __init__(self, x, y, team, captured):
@@ -237,6 +246,7 @@ class Bishop(Piece):
         self.icon = 'b'
         if self.team:
             self.icon = 'B'
+        self.kind = 'Bishop'
 
 class King(Piece):
     def __init__(self, x, y, team, captured):
@@ -244,6 +254,7 @@ class King(Piece):
         self.icon = 'k'
         if self.team:
             self.icon = 'K'
+        self.kind = 'King'
 
 class Queen(Piece):
     def __init__(self, x, y, team, captured):
@@ -251,6 +262,7 @@ class Queen(Piece):
         self.icon = 'q'
         if self.team:
             self.icon = 'Q'
+            self.kind = 'Queen'
 
     def availMoves(self, board):
         kills = []
