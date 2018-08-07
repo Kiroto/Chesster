@@ -79,6 +79,22 @@ def options(usrin):
             print('Correct usage: move L# L#, where L is a letter from A to H and # is a number from 1-8')
     elif usrin == 'checkcheck':
         print(teibol.check())
+    elif usrin == 'captured':
+        if teibol.capturedpieces == [[],[]]:
+            print('No pieces have been captured.')
+        else:
+            if teibol.capturedpieces[0] != []:
+                capturedverb = []
+                for k in teibol.capturedpieces[0]:
+                    capturedverb.append(k.kind)
+                print('The black team has captured ' + str(capturedverb)[1:-1])
+
+            if teibol.capturedpieces[1] != []:
+                capturedverb = []
+                for k in teibol.capturedpieces[1]:
+                    capturedverb.append(k.kind)
+                print('The white team has captured ' + str(capturedverb)[1:-1])
+
     print('\n' + teibol.showtable() + '\n')
 
 options('help')
