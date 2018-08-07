@@ -137,9 +137,7 @@ class Table:
                                 anss[1] = True
                             else:
                                 anss[0] = True
-        return anss
-                
-        
+        return anss    
 class Space:
     def __init__(self, y, x):
         self.x = x
@@ -429,7 +427,7 @@ class Queen(Piece):
         self.icon = 'q'
         if self.team:
             self.icon = 'Q'
-            self.kind = 'Queen'
+        self.kind = 'Queen'
 
     def availMoves(self, board):
         kills = []
@@ -437,8 +435,9 @@ class Queen(Piece):
 
         for i in range(1, 10):
             sidelimit = self.limitSide(board, i)
-            moves.extend(sidelimit[0])
-            kills.extend(sidelimit[1])
+            if sidelimit[0] not in moves or sidelimit[1] not in kills:
+                moves.extend(sidelimit[0])
+                kills.extend(sidelimit[1])
 
         return moves, kills         
 
