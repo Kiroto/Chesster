@@ -79,7 +79,7 @@ class Table:
         printtable = ''
         # printtable = '+' + '-+' * 7 + '-+\n'
         for i in range(len(newtable)):
-            printtable += str(i) + '|'
+            printtable += str((i+1)*-1 + 9) + '|'
             for k in range(len(newtable[i])):
                 printtable += newtable[i][k] + ' '
             printtable += '\n'
