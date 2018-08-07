@@ -79,10 +79,11 @@ class Table:
         printtable = ''
         # printtable = '+' + '-+' * 7 + '-+\n'
         for i in range(len(newtable)):
+            printtable += str(i) + '|'
             for k in range(len(newtable[i])):
-                # printtable += '|'
-                printtable += newtable[i][k]
+                printtable += newtable[i][k] + ' '
             printtable += '\n'
+        printtable += '-+---------------\n |A B C D E F G H'
             # printtable += '|\n+' + '-+' * 7 + '-+\n'
         return printtable
         
