@@ -124,7 +124,7 @@ class Table:
                     
                     for n in diagonal:
                         lookedat = self.table[n[0]][n[1]]
-                        if isinstance((lookedat, Bishop) or isinstance(lookedat, Queen) and kteam != lookedat.team):
+                        if (isinstance(lookedat, Bishop) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
                             if not kteam:
                                 anss[1] = True
                             else:
@@ -132,7 +132,7 @@ class Table:
 
                     for n in direct:
                         lookedat = self.table[n[0]][n[1]]
-                        if isinstance((lookedat, Rook) or isinstance(lookedat, Queen) and kteam != lookedat.team):
+                        if (isinstance(lookedat, Rook) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
                             if not kteam:
                                 anss[1] = True
                             else:
