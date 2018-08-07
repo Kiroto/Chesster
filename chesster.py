@@ -26,6 +26,7 @@ class Table:
     def __init__(self, scale=8):
         self.table = []
         self.curteam = True
+        self.capturedpieces = [[],[]]
     
     def resettable(self):
         self.table = []
@@ -198,13 +199,12 @@ class Piece(Space):
         self.team = team
         self.captured = captured
 
-    def die(self):
+    def die(self, board):
         self.captured = True
-        self.team = None
-        if (self.x+1) % 2 == (self.y+1) % 2:
-            self.icon = '#'
+        if self.team:
+            board.capturedpieces[0].append(self)
         else:
-            self.icon = '.'
+            board.capturedpieces[1].append(self)
 
     def availMoves(self, board):
         return [], []
