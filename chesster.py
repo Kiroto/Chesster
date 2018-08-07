@@ -209,7 +209,8 @@ class Piece(Space):
     def availMoves(self, board):
         return [], []
 
-    def move(self, board, ypos, xpos):
+    def move(self, teibol, ypos, xpos):
+        board = teibol.table
         moves, kills = self.availMoves(board)
         if (ypos, xpos) in moves:
             board[ypos][xpos] = self
@@ -218,7 +219,9 @@ class Piece(Space):
             self.y = ypos
             
         elif (ypos, xpos) in kills:
-            board[ypos][xpos].die(board)
+            board[ypos][xpos].die(teibol)
+            board[ypos][xpos] = self
+            board[self.y][self.x] = Space(self.y, self.x)
             self.x = xpos
             self.y = ypos
 
