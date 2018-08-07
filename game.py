@@ -67,8 +67,8 @@ def options(usrin):
             place = usrin[6:]
             froy, frox = chesster.rctopos(place)
             movements, assasinations = teibol.table[froy][frox].availMoves(teibol.table)
-            print('It can move to: ' + str(chesster.multipostorc(movements)[1:-1]))
-            print('It can kill at: ' + str(chesster.multipostorc(assasinations)[1:-1]))
+            print('It can move to: ' + str(chesster.multipostorc(movements))[1:-1])
+            print('It can kill at: ' + str(chesster.multipostorc(assasinations))[1:-1])
         except Exception as e:
             print('Something went wrong. Sorry bro!')
             print(str(e))
