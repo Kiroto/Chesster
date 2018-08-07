@@ -162,7 +162,7 @@ class Space:
     def availMoves(self, board):
         return [], []
     
-    def move(self, board):
+    def move(self, board, xpos, ypos):
         print("You can't move an empty space!")
 
     def descr(self, table=None):
