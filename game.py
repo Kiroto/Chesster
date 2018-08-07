@@ -35,9 +35,7 @@ def options(usrin):
             print(str(e))
     elif usrin == 'showTable':
         try:
-            print()
             print(teibol.showtable())
-            print()
             print('Table Shown!')
         except Exception as e:
             print('Something went wrong. Sorry bro!')
@@ -79,6 +77,7 @@ def options(usrin):
         print(teibol.showtable())
     elif usrin == 'checkcheck':
         print(teibol.check())
+    print('\n' + teibol.showtable() + '\n')
 
 options('help')
 while True: # Main loop
