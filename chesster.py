@@ -106,6 +106,16 @@ class Table:
                         opposide = 8
 
                     nearPeon = i.limitSide(self.table, opposide+1, 1)[1] + i.limitSide(self.table, opposide-1, 1)[1]
+                    spectreHorse = Horse(i.x, i.y, i.team, False)
+                    nearHorse = spectreHorse.availMoves(self.table)[1]
+
+                    for n in nearHorse:
+                        lookedat = self.table[n[0]][n[1]]
+                        if isinstance(lookedat, Horse) and kteam != lookedat.team:
+                            if not kteam:
+                                anss[1] = True
+                            else:
+                                anss[0] = True
 
                     for n in nearPeon:
                         lookedat = self.table[n[0]][n[1]]
