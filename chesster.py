@@ -224,6 +224,11 @@ class Piece(Space):
             board[self.y][self.x] = Space(self.y, self.x)
             self.x = xpos
             self.y = ypos
+        
+        if teibol.check()[1] == True:
+            print('Black in Check')
+        if teibol.check()[0] == True:
+            print('White in Check')
 
     def limitSide(self, board, side, speed=8):
         checkingpos = [self.y, self.x]
