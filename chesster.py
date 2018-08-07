@@ -218,7 +218,7 @@ class Piece(Space):
             self.y = ypos
             
         elif (ypos, xpos) in kills:
-            board[ypos][xpos].die()
+            board[ypos][xpos].die(board)
             self.x = xpos
             self.y = ypos
 
