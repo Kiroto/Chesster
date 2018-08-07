@@ -211,14 +211,14 @@ class Piece(Space):
 
     def move(self, board, ypos, xpos):
         moves, kills = self.availMoves(board)
-        if (ypos, xpos) in moves or (ypos, xpos) in kills:
+        if (ypos, xpos) in moves:
             board[ypos][xpos] = self
             board[self.y][self.x] = Space(self.y, self.x)
             self.x = xpos
             self.y = ypos
             
         elif (ypos, xpos) in kills:
-            board[ypos][xpos].die(board)
+            board[ypos][xpos].die()
             self.x = xpos
             self.y = ypos
 
