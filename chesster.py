@@ -177,23 +177,8 @@ class Piece(Space):
             else:
                 cont = False
             return cont, spaces, kills, speed
-            
-        if side == 8:
-            while checkingpos[0] > 0 and speed > 0:
-                checkingpos[0] += -1
-                cont, spaces, kills, speed = checkSpace(checkingpos, speed)
-                if not cont:
-                    break
 
-        elif side == 9:
-            while checkingpos[0] > 0 and checkingpos[1] < 7 and speed > 0:
-                checkingpos[0] += -1
-                checkingpos[1] += 1
-                cont, spaces, kills, speed = checkSpace(checkingpos, speed)
-                if not cont:
-                    break
-
-        elif side == 1:
+        if side == 1:
             while checkingpos[0] < 7 and checkingpos[1] > 0 and speed > 0:
                 checkingpos[0] += 1
                 checkingpos[1] += -1
@@ -234,6 +219,21 @@ class Piece(Space):
             while checkingpos[0] > 0 and checkingpos[1] > 0 and speed > 0:
                 checkingpos[0] += -1
                 checkingpos[1] += -1
+                cont, spaces, kills, speed = checkSpace(checkingpos, speed)
+                if not cont:
+                    break  
+
+        elif side == 8:
+            while checkingpos[0] > 0 and speed > 0:
+                checkingpos[0] += -1
+                cont, spaces, kills, speed = checkSpace(checkingpos, speed)
+                if not cont:
+                    break
+
+        elif side == 9:
+            while checkingpos[0] > 0 and checkingpos[1] < 7 and speed > 0:
+                checkingpos[0] += -1
+                checkingpos[1] += 1
                 cont, spaces, kills, speed = checkSpace(checkingpos, speed)
                 if not cont:
                     break
@@ -294,18 +294,45 @@ class Horse(Piece):
         self.icon = 'h'
         if self.team:
             self.icon = 'H'
-        self.kind = 'Horse'
-    
+        self.kind = 'Horse'        
+
     def availMoves(self, board):
+        spaces = []
         kills = []
-        moves = []
 
-        for i in range(1, 10):
-            sidelimit = self.limitSide(board, i)
-            moves.extend(sidelimit[0])
-            kills.extend(sidelimit[1])
+        def checkSpace(checkingpos):
+            checkedspace = board[checkingpos[0]][checkingpos[1]]
+            if checkedspace.team == None:
+                spaces.append((checkedspace.y, checkedspace.x))
+            elif checkedspace.team != self.team:
+                kills.append((checkedspace.y, checkedspace.x))
+            return spaces, kills
+        
+        if self.y <= 5:
+            if self.x >= 1:
+                spaces, kills = checkSpace([self.y +2, self.x-1])
+            if self.x <= 6:
+                spaces, kills = checkSpace([self.y +2, self.x+1])
+        
+        if self.y >= 2:    
+            if self.x >= 1:
+                spaces, kills = checkSpace([self.y -2, self.x-1])
+            if self.x <= 6:
+                spaces, kills = checkSpace([self.y -2, self.x+1])
+        
+        if self.x <= 5:
+            if self.y >= 1:
+                spaces, kills = checkSpace([self.x +2, self.y-1])
+            if self.y <= 6:
+                spaces, kills = checkSpace([self.x +2, self.y+1])
+        
+        if self.x >= 2:    
+            if self.y >= 1:
+                spaces, kills = checkSpace([self.x -2, self.y-1])
+            if self.y <= 6:
+                spaces, kills = checkSpace([self.x -2, self.y+1])
 
-        return moves, kills         
+        return spaces, kills         
 
 class Bishop(Piece):
     def __init__(self, x, y, team, captured):
