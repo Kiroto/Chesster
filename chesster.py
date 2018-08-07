@@ -144,7 +144,7 @@ class Piece(Space):
             self.icon = '.'
 
     def availMoves(self, board):
-        return None, None
+        return [], []
 
     def move(self, board, ypos, xpos):
         moves, kills = self.availMoves(board)
