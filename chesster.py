@@ -19,6 +19,11 @@ def multipostorc(poss):
         rcmove.append(postorc(i[0], i[1]))
     return rcmove
 
+def multirctopos(rcs):
+    posmove = []
+    for i in rcs:
+        posmove.append(rctopos(i))
+    return posmove
 class Table:
     def __init__(self, scale=8):
         self.table = []
