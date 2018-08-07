@@ -148,7 +148,7 @@ class Piece(Space):
 
     def move(self, board, ypos, xpos):
         moves, kills = self.availMoves(board)
-        if (xpos, ypos) in moves or (xpos, ypos) in kills:
+        if (ypos, xpos) in moves or (ypos, xpos) in kills:
             board[ypos][xpos] = self
             board[self.y][self.x] = Space(self.x, self.y)
             self.x = xpos
@@ -170,9 +170,9 @@ class Piece(Space):
             cont = True
             checkedspace = board[checkingpos[0]][checkingpos[1]]
             if checkedspace.team == None:
-                spaces.append((checkedspace.x, checkedspace.y))
+                spaces.append((checkedspace.y, checkedspace.x))
             elif checkedspace.team != self.team:
-                kills.append((checkedspace.x, checkedspace.y))
+                kills.append((checkedspace.y, checkedspace.x))
                 cont = False
             else:
                 cont = False
@@ -256,9 +256,9 @@ class Peon(Piece):
         else: 
             side = 2
         if self.y == 1 and not self.team:
-            moves.append((self.x, self.y+2))
+            moves.append((self.y+2, self.x))
         elif self.y == 6 and self.team:
-            moves.append((self.x, self.y-2))
+            moves.append((self.y-2, self.x))
         moves.extend(self.limitSide(board, side, 1)[0])
         kills.extend(self.limitSide(board, side+1, 1)[1])
         kills.extend(self.limitSide(board, side-1, 1)[1])
@@ -306,31 +306,30 @@ class Horse(Piece):
                 spaces.append((checkedspace.y, checkedspace.x))
             elif checkedspace.team != self.team:
                 kills.append((checkedspace.y, checkedspace.x))
-            return spaces, kills
         
         if self.y <= 5:
             if self.x >= 1:
-                spaces, kills = checkSpace([self.y +2, self.x-1])
+                checkSpace([self.y +2, self.x-1])
             if self.x <= 6:
-                spaces, kills = checkSpace([self.y +2, self.x+1])
+                checkSpace([self.y +2, self.x+1])
         
         if self.y >= 2:    
             if self.x >= 1:
-                spaces, kills = checkSpace([self.y -2, self.x-1])
+                checkSpace([self.y -2, self.x-1])
             if self.x <= 6:
-                spaces, kills = checkSpace([self.y -2, self.x+1])
+                checkSpace([self.y -2, self.x+1])
         
         if self.x <= 5:
             if self.y >= 1:
-                spaces, kills = checkSpace([self.x +2, self.y-1])
+                checkSpace([self.y - 1, self.x + 2])
             if self.y <= 6:
-                spaces, kills = checkSpace([self.x +2, self.y+1])
+                checkSpace([self.y + 1, self.x + 2])
         
         if self.x >= 2:    
             if self.y >= 1:
-                spaces, kills = checkSpace([self.x -2, self.y-1])
+                checkSpace([self.y - 1, self.x-2])
             if self.y <= 6:
-                spaces, kills = checkSpace([self.x -2, self.y+1])
+                checkSpace([self.y + 1, self.x-2])
 
         return spaces, kills         
 
