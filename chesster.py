@@ -161,6 +161,9 @@ class Space:
 
     def availMoves(self, board):
         return [], []
+    
+    def move(self, board):
+        print("You can't move an empty space!")
 
     def descr(self, table=None):
         attribs = vars(self)
