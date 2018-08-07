@@ -77,6 +77,8 @@ def options(usrin):
         spot = chesster.rctopos(usrin[8:])
         teibol.table[piece[0]][piece[1]].move(teibol.table, spot[0], spot[1])
         print(teibol.showtable())
+    elif usrin == 'checkcheck':
+        print(teibol.check())
 
 options('help')
 while True: # Main loop
