@@ -74,7 +74,7 @@ def options(usrin):
         try:
             piece = chesster.rctopos(usrin[5:7])
             spot = chesster.rctopos(usrin[8:])
-            teibol.table[piece[0]][piece[1]].move(teibol.table, spot[0], spot[1])
+            teibol.table[piece[0]][piece[1]].move(teibol, spot[0], spot[1])
         except IndexError as e:
             print('Correct usage: move L# L#, where L is a letter from A to H and # is a number from 1-8')
     elif usrin == 'checkcheck':
