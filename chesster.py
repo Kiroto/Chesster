@@ -200,7 +200,7 @@ class Piece(Space):
         moves, kills = self.availMoves(board)
         if (ypos, xpos) in moves or (ypos, xpos) in kills:
             board[ypos][xpos] = self
-            board[self.y][self.x] = Space(self.x, self.y)
+            board[self.y][self.x] = Space(self.y, self.x)
             self.x = xpos
             self.y = ypos
             
@@ -225,20 +225,20 @@ class Piece(Space):
                 cont = False
             else:
                 cont = False
-            return cont, spaces, kills, speed
+            return cont, speed
 
         if side == 1:
             while checkingpos[0] < 7 and checkingpos[1] > 0 and speed > 0:
                 checkingpos[0] += 1
                 checkingpos[1] += -1
-                cont, spaces, kills, speed = checkSpace(checkingpos, speed)
+                cont, speed = checkSpace(checkingpos, speed)
                 if not cont:
                     break
 
         elif side == 2:
             while checkingpos[0] < 7 and speed > 0:
                 checkingpos[0] += 1
-                cont, spaces, kills, speed = checkSpace(checkingpos, speed)
+                cont, speed = checkSpace(checkingpos, speed)
                 if not cont:
                     break
 
@@ -246,21 +246,21 @@ class Piece(Space):
             while checkingpos[0] < 7 and checkingpos[1] < 7 and speed > 0:
                 checkingpos[0] += 1
                 checkingpos[1] += 1
-                cont, spaces, kills, speed = checkSpace(checkingpos, speed)
+                cont, speed = checkSpace(checkingpos, speed)
                 if not cont:
                     break
 
         elif side == 4:
             while checkingpos[1] > 0 and speed > 0:
                 checkingpos[1] += -1
-                cont, spaces, kills, speed = checkSpace(checkingpos, speed)
+                cont, speed = checkSpace(checkingpos, speed)
                 if not cont:
                     break
 
         elif side == 6:
             while checkingpos[1] < 7 and speed > 0:
                 checkingpos[1] += 1
-                cont, spaces, kills, speed = checkSpace(checkingpos, speed)
+                cont, speed = checkSpace(checkingpos, speed)
                 if not cont:
                     break
 
@@ -268,14 +268,14 @@ class Piece(Space):
             while checkingpos[0] > 0 and checkingpos[1] > 0 and speed > 0:
                 checkingpos[0] += -1
                 checkingpos[1] += -1
-                cont, spaces, kills, speed = checkSpace(checkingpos, speed)
+                cont, speed = checkSpace(checkingpos, speed)
                 if not cont:
                     break  
 
         elif side == 8:
             while checkingpos[0] > 0 and speed > 0:
                 checkingpos[0] += -1
-                cont, spaces, kills, speed = checkSpace(checkingpos, speed)
+                cont, speed = checkSpace(checkingpos, speed)
                 if not cont:
                     break
 
@@ -283,7 +283,7 @@ class Piece(Space):
             while checkingpos[0] > 0 and checkingpos[1] < 7 and speed > 0:
                 checkingpos[0] += -1
                 checkingpos[1] += 1
-                cont, spaces, kills, speed = checkSpace(checkingpos, speed)
+                cont, speed = checkSpace(checkingpos, speed)
                 if not cont:
                     break
 
