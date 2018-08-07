@@ -86,6 +86,59 @@ class Table:
         printtable += '-+---------------\n |A B C D E F G H'
             # printtable += '|\n+' + '-+' * 7 + '-+\n'
         return printtable
+    
+    def check(self):
+        kings = 0
+        diagonal = []
+        direct = []
+        anss = [False, False]
+        for k in self.table:
+            if kings == 2:
+                        break
+            for i in k:
+                if kings == 2:
+                        break
+                if isinstance(i, King):
+                    kings += 1
+                    kteam = i.team
+                    opposide = 2
+                    if kteam:
+                        opposide = 8
+
+                    nearPeon = i.limitSide(self.table, opposide+1, 1)[1] + i.limitSide(self.table, opposide-1, 1)[1]
+
+                    for n in nearPeon:
+                        lookedat = self.table[n[0]][n[1]]
+                        if isinstance(lookedat, Peon) and kteam != lookedat.team:
+                            if not kteam:
+                                anss[1] = True
+                            else:
+                                anss[0] = True
+                        
+                    for n in range(1, 10):
+                        directionKill = i.limitSide(self.table, n)[1]
+                        if n % 2 != 0:
+                            diagonal.extend(directionKill)
+                        else:
+                            direct.extend(directionKill)
+                    
+                    for n in diagonal:
+                        lookedat = self.table[n[0]][n[1]]
+                        if isinstance((lookedat, Bishop) or isinstance(lookedat, Queen) and kteam != lookedat.team):
+                            if not kteam:
+                                anss[1] = True
+                            else:
+                                anss[0] = True
+
+                    for n in direct:
+                        lookedat = self.table[n[0]][n[1]]
+                        if isinstance((lookedat, Rook) or isinstance(lookedat, Queen) and kteam != lookedat.team):
+                            if not kteam:
+                                anss[1] = True
+                            else:
+                                anss[0] = True
+        return anss
+                
         
 class Space:
     def __init__(self, y, x):
@@ -157,7 +210,6 @@ class Piece(Space):
             board[ypos][xpos].die()
             self.x = xpos
             self.y = ypos
-
 
     def limitSide(self, board, side, speed=8):
         checkingpos = [self.y, self.x]
