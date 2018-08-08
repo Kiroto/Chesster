@@ -1,3 +1,5 @@
+import copy
+
 def rctopos(rc): # Row Column
     columnID = {'a': 0, 'b': 1, 'c': 2, 'd':3, 'e':4, 'f': 5, 'g': 6, 'h': 7,\
         'A': 0, 'B': 1, 'C': 2, 'D':3, 'E':4, 'F': 5, 'G': 6, 'H': 7}
@@ -27,6 +29,7 @@ class Table:
         self.table = []
         self.curteam = True
         self.capturedpieces = [[],[]]
+        self.isSpectre = False
     
     def resettable(self):
         self.table = []
@@ -107,7 +110,7 @@ class Table:
                         opposide = 8
 
                     nearPeon = i.limitSide(self.table, opposide+1, 1)[1] + i.limitSide(self.table, opposide-1, 1)[1]
-                    spectreHorse = Horse(i.x, i.y, i.team, False)
+                    spectreHorse = Horse(i.y, i.x, i.team, False)
                     nearHorse = spectreHorse.availMoves(self.table)[1]
 
                     for n in nearHorse:
@@ -148,7 +151,34 @@ class Table:
                                 anss[1] = True
                             else:
                                 anss[0] = True
+
+        if (anss[1] or anss[0]) and not self.isSpectre:
+            self.checkmate(anss)
         return anss    
+    
+    def checkmate(self, checked):
+        for k in range(2):
+            checking = checked[k]
+            if checking:
+                kteam = False
+                if k == 0:
+                    kteam = True
+                for y in self.table:
+                    for x in y:
+                        if x.team == kteam:
+                            possibleMoves, _ = x.availMoves(self.table)
+                            possibleMoves.extend(_)
+                            while possibleMoves:
+                                spectretable = copy.deepcopy(self)
+                                spectretable.isSpectre = True
+                                save = possibleMoves.pop()
+                                spectretable.table[x.y][x.x].move(spectretable, save[0], save[1])
+                                if not spectretable.check()[k]:
+                                    return
+                if not self.isSpectre:
+                    print('Checkmate')
+                return     
+        
 class Space:
     def __init__(self, y, x):
         self.x = x
@@ -225,9 +255,9 @@ class Piece(Space):
             self.x = xpos
             self.y = ypos
         
-        if teibol.check()[1] == True:
+        if not teibol.isSpectre and teibol.check()[1] == True:
             print('Black in Check')
-        if teibol.check()[0] == True:
+        if not teibol.isSpectre and teibol.check()[0] == True:
             print('White in Check')
 
     def limitSide(self, board, side, speed=8):
@@ -326,10 +356,15 @@ class Peon(Piece):
         else: 
             side = 2
         if self.y == 1 and not self.team:
-            moves.append((self.y+2, self.x))
+            limitside = self.limitSide(board, side, 2)
+            for k in limitside:
+                moves.extend(k)
         elif self.y == 6 and self.team:
-            moves.append((self.y-2, self.x))
-        moves.extend(self.limitSide(board, side, 1)[0])
+            limitside = self.limitSide(board, side, 2)
+            for k in limitside:
+                moves.extend(k)
+        else:
+            moves.extend(self.limitSide(board, side, 1)[0])
         kills.extend(self.limitSide(board, side+1, 1)[1])
         kills.extend(self.limitSide(board, side-1, 1)[1])
 
