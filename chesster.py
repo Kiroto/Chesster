@@ -165,6 +165,7 @@ class Table:
 
         if (anss[1] or anss[0]) and not self.isSpectre:
             if self.checkmate(anss):
+                print('Checkmate')
                 self.showtable()    
                 self.resettable()
         return anss    
@@ -261,6 +262,7 @@ class Piece(Space):
                 board[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
+                teibol.switchTeam()
                 
             elif (ypos, xpos) in kills:
                 board[ypos][xpos].die(teibol)
@@ -268,14 +270,13 @@ class Piece(Space):
                 board[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
-            
-            teibol.switchTeam()
+                teibol.switchTeam()
 
             if not teibol.isSpectre and teibol.check()[1] == True:
                 print('Black in Check')
             if not teibol.isSpectre and teibol.check()[0] == True:
                 print('White in Check')
-        else:
+        elif not board.isSpectre:
             if self.team:
                 print("Not whites' turn.")
             else:
