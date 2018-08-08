@@ -276,7 +276,10 @@ class Piece(Space):
             if not teibol.isSpectre and teibol.check()[0] == True:
                 print('White in Check')
         else:
-            raise InvalidTeam('Not ' + self.team + "'s turn.")
+            if self.team:
+                raise InvalidTeam("Not whites' turn.")
+            else:
+                raise InvalidTeam("Not blacks' turn.")
             
 
     def limitSide(self, board, side, speed=8):
