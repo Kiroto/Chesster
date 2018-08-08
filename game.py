@@ -51,10 +51,7 @@ def options(usrin):
             print(str(e))
     elif usrin in commands[4]:
         try:
-            if teibol.curteam:
-                teibol.curteam = False
-            else:
-                teibol.curteam = True
+            teibol.switchTeam()
             print('Team Changed!')
         except Exception as e:
             print('Something went wrong. Sorry bro!')
