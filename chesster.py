@@ -258,7 +258,7 @@ class Piece(Space):
             board = teibol.table
             moves, kills = self.availMoves(board)
             if (ypos, xpos) in moves:
-                if isinstance(self, Peon):
+                if isinstance(self, Peon) and (ypos in [0, 7]):
                     board[ypos][xpos] = Queen(self.x, self.y, self.team, self.captured)
                 else:
                     board[ypos][xpos] = self
