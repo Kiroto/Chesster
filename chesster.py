@@ -153,31 +153,33 @@ class Table:
                                 anss[0] = True
 
         if (anss[1] or anss[0]) and not self.isSpectre:
-            self.checkmate(anss)
+            if self.checkmate(anss):
+                self.showtable()    
+                self.resettable()
         return anss    
     
     def checkmate(self, checked):
         for k in range(2):
             checking = checked[k]
-            if checking:
-                kteam = False
-                if k == 0:
-                    kteam = True
-                for y in self.table:
-                    for x in y:
-                        if x.team == kteam:
-                            possibleMoves, _ = x.availMoves(self.table)
-                            possibleMoves.extend(_)
-                            while possibleMoves:
-                                spectretable = copy.deepcopy(self)
-                                spectretable.isSpectre = True
-                                save = possibleMoves.pop()
-                                spectretable.table[x.y][x.x].move(spectretable, save[0], save[1])
-                                if not spectretable.check()[k]:
-                                    return
-                if not self.isSpectre:
-                    print('Checkmate')
-                return     
+            if  not checking:
+                continue
+            kteam = False
+            if k == 0:
+                kteam = True
+            for y in self.table:
+                for x in y:
+                    if x.team == kteam:
+                        possibleMoves, _ = x.availMoves(self.table)
+                        possibleMoves.extend(_)
+                        while possibleMoves:
+                            spectretable = copy.deepcopy(self)
+                            spectretable.isSpectre = True
+                            save = possibleMoves.pop()
+                            spectretable.table[x.y][x.x].move(spectretable, save[0], save[1])
+                            if not spectretable.check()[k]:
+                                return False
+            if not self.isSpectre:
+                return True
         
 class Space:
     def __init__(self, y, x):
