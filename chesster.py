@@ -49,6 +49,7 @@ class Table:
                 self.table[-1].append(Space(i, k))
     
     def filltable(self):
+        self.curteam = True
         for i in range(len(self.table)):
             if i == 0:
                 for k in range(len(self.table[i])):
