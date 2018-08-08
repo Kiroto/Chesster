@@ -277,9 +277,9 @@ class Piece(Space):
                 print('White in Check')
         else:
             if self.team:
-                raise InvalidTeam("Not whites' turn.")
+                print("Not whites' turn.")
             else:
-                raise InvalidTeam("Not blacks' turn.")
+                print("Not blacks' turn.")
             
 
     def limitSide(self, board, side, speed=8):
