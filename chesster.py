@@ -167,7 +167,8 @@ class Table:
             if self.checkmate(anss):
                 print('Checkmate')
                 self.showtable()    
-                self.resettable()
+                # self.resettable()
+                # self.filltable
         return anss    
     
     def checkmate(self, checked):
@@ -259,7 +260,7 @@ class Piece(Space):
             moves, kills = self.availMoves(board)
             if (ypos, xpos) in moves:
                 if isinstance(self, Peon) and (ypos in [0, 7]):
-                    board[ypos][xpos] = Queen(xpos, ypos, self.team, self.captured)
+                    board[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
                 else:
                     board[ypos][xpos] = self
                 board[self.y][self.x] = Space(self.y, self.x)
@@ -270,7 +271,7 @@ class Piece(Space):
             elif (ypos, xpos) in kills:
                 board[ypos][xpos].die(teibol)
                 if isinstance(self, Peon) and (ypos in [0, 7]):
-                    board[ypos][xpos] = Queen(xpos, ypos, self.team, self.captured)
+                    board[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
                 else:
                     board[ypos][xpos] = self
                 board[self.y][self.x] = Space(self.y, self.x)
