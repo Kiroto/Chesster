@@ -265,7 +265,7 @@ class Piece(Space):
                 board[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
-                teibol.switchTeam()
+                board.switchTeam()
                 
             elif (ypos, xpos) in kills:
                 board[ypos][xpos].die(teibol)
@@ -273,7 +273,7 @@ class Piece(Space):
                 board[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
-                teibol.switchTeam()
+                board.switchTeam()
 
             if not teibol.isSpectre and teibol.check()[1] == True:
                 print('Black in Check')
