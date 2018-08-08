@@ -31,6 +31,12 @@ class Table:
         self.capturedpieces = [[],[]]
         self.isSpectre = False
     
+    def switchTeam(self):
+        if self.curteam:
+            self.curteam = False
+        else:
+            self.curteam = True
+
     def resettable(self):
         self.table = []
         for i in range(8):
@@ -242,25 +248,29 @@ class Piece(Space):
         return [], []
 
     def move(self, teibol, ypos, xpos):
-        board = teibol.table
-        moves, kills = self.availMoves(board)
-        if (ypos, xpos) in moves:
-            board[ypos][xpos] = self
-            board[self.y][self.x] = Space(self.y, self.x)
-            self.x = xpos
-            self.y = ypos
+        if self.team == teibol.curteam:
+            board = teibol.table
+            moves, kills = self.availMoves(board)
+            if (ypos, xpos) in moves:
+                board[ypos][xpos] = self
+                board[self.y][self.x] = Space(self.y, self.x)
+                self.x = xpos
+                self.y = ypos
+                
+            elif (ypos, xpos) in kills:
+                board[ypos][xpos].die(teibol)
+                board[ypos][xpos] = self
+                board[self.y][self.x] = Space(self.y, self.x)
+                self.x = xpos
+                self.y = ypos
             
-        elif (ypos, xpos) in kills:
-            board[ypos][xpos].die(teibol)
-            board[ypos][xpos] = self
-            board[self.y][self.x] = Space(self.y, self.x)
-            self.x = xpos
-            self.y = ypos
-        
-        if not teibol.isSpectre and teibol.check()[1] == True:
-            print('Black in Check')
-        if not teibol.isSpectre and teibol.check()[0] == True:
-            print('White in Check')
+            teibol.switchTeam()
+
+            if not teibol.isSpectre and teibol.check()[1] == True:
+                print('Black in Check')
+            if not teibol.isSpectre and teibol.check()[0] == True:
+                print('White in Check')
+            
 
     def limitSide(self, board, side, speed=8):
         checkingpos = [self.y, self.x]
