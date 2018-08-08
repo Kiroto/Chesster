@@ -258,7 +258,10 @@ class Piece(Space):
             board = teibol.table
             moves, kills = self.availMoves(board)
             if (ypos, xpos) in moves:
-                board[ypos][xpos] = self
+                if isinstance(self, Peon):
+                    board[ypos][xpos] = Queen(self.x, self.y, self.team, self.captured)
+                else:
+                    board[ypos][xpos] = self
                 board[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
@@ -281,7 +284,7 @@ class Piece(Space):
                 print("Not whites' turn.")
             else:
                 print("Not blacks' turn.")
-            
+   
 
     def limitSide(self, board, side, speed=8):
         checkingpos = [self.y, self.x]
