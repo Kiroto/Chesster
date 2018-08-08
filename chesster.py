@@ -24,6 +24,10 @@ def multirctopos(rcs):
     for i in rcs:
         posmove.append(rctopos(i))
     return posmove
+
+class InvalidTeam(Exception):
+                pass
+
 class Table:
     def __init__(self, scale=8):
         self.table = []
@@ -271,8 +275,6 @@ class Piece(Space):
             if not teibol.isSpectre and teibol.check()[0] == True:
                 print('White in Check')
         else:
-            class InvalidTeam(Exception):
-                pass
             raise InvalidTeam('Not ' + self.team + "'s turn.")
             
 
