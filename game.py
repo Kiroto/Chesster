@@ -86,6 +86,10 @@ def options(usrin):
         except KeyError as e:
             print('Correct usage: move L# L#, where L is a letter between A and H and # is a number between 1 and 8.\n' + str(e) + ' is not recognized.')
     print(teibol.showtable())
+    if teibol.curteam:
+        print("White pieces' turn")
+    else:
+        print("Black pieces' turn")
 
 options('help')
 while True: # Main loop
