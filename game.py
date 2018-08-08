@@ -53,6 +53,8 @@ def options(usrin):
         try:
             teibol.switchTeam()
             print('Team Changed!')
+        except chesster.InvalidTeam as e:
+            print(e)
         except Exception as e:
             print('Something went wrong. Sorry bro!')
             print(str(e))
