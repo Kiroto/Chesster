@@ -254,38 +254,9 @@ class Piece(Space):
     def availMoves(self, board):
         return [], []
 
-    def checkforcheck(self, board):
-        moves, kills = self.availMoves(board)
-        for i in moves:
-            spectreboard = copy.deepcopy(board)
-            piece = spectreboard.table[self.y][self.x]
-            if piece.team:
-                teamno = 0
-            else:
-                teamno = 1
-            piece.move(spectreboard, i[0], i[1], True)
-            if spectreboard.check()[teamno]:
-                moves.remove(i)
-
-        for i in kills:
-            spectreboard = copy.deepcopy(board)
-            piece = spectreboard.table[self.y][self.x]
-            if piece.team:
-                teamno = 0
-            else:
-                teamno = 1
-            piece.move(spectreboard, i[0], i[1], True)
-            if spectreboard.check()[teamno]:
-                kills.remove(i)
-        
-        return moves, kills
-
     def move(self, teibol, ypos, xpos, allowIllegal=False):
         board = teibol.table
-        if not allowIllegal:
-            moves, kills = self.checkforcheck(teibol)
-        else:
-            moves, kills = self.availMoves(teibol)
+        moves, kills = self.availMoves(teibol)
         if self.team == teibol.curteam:
             if (ypos, xpos) in moves:
                 if isinstance(self, Peon) and (ypos in [0, 7]):
