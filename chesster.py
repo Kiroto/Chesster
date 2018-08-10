@@ -401,7 +401,6 @@ class Peon(Piece):
 
         return moves, kills
 
-
 class Rook(Piece):
     def __init__(self, x, y, team, captured):
         Piece.__init__(self, x, y, team, captured)
@@ -525,11 +524,3 @@ class Queen(Piece):
                 kills.extend(sidelimit[1])
 
         return moves, kills         
-
-# teibol = Table()
-# teibol.resettable()
-# teibol.filltable()
-# print(teibol.showtable())
-# teibol.table[1][1].move(teibol.table, 3, 1)
-# print(teibol.showtable())
-# teibol.table[3][1].descr()
