@@ -25,9 +25,6 @@ def multirctopos(rcs):
         posmove.append(rctopos(i))
     return posmove
 
-class InvalidTeam(Exception):
-                pass
-
 class Table:
     def __init__(self, scale=8):
         self.table = []
