@@ -148,12 +148,8 @@ class Table:
                 if (isinstance(lookedat, Rook) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
                     checkking(anss, kteam)
 
-        if (anss[1] or anss[0]) and not self.isSpectre:
-            if self.checkmate(anss):
-                print('Checkmate')
-                self.showtable()    
-                # self.resettable()
-                # self.filltable
+        if (anss[1] or anss[0]):
+            pass
         return anss    
     
     def checkmate(self, checked):
