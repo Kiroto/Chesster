@@ -82,8 +82,9 @@ def options(usrin):
             # print(str(e))
     elif usrin[:usrin.find(' ')] in commands[7]: # move A2 A4
         try:
-            piece = chesster.rctopos(usrin[5:7])
-            spot = chesster.rctopos(usrin[8:])
+            spacePos = usrin.find(' ')
+            piece = chesster.rctopos(usrin[spacePos+1:spacePos+3])
+            spot = chesster.rctopos(usrin[spacePos+4:spacePos+6])
             teibol.table[piece[0]][piece[1]].move(teibol, spot[0], spot[1])
         except KeyError as e:
             print('Correct usage: move L# L#, where L is a letter between A and H and # is a number between 1 and 8.\n' + str(e) + ' is not recognized.')
