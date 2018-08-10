@@ -120,7 +120,7 @@ class Table:
                     if kteam:
                         opposide = 8
 
-                    nearPeon = i.limitSide(self.table, opposide+1, 1)[1] + i.limitSide(self.table, opposide-1, 1)[1]
+                    nearPeon = i.limitSide(self, opposide+1, 1)[1] + i.limitSide(self, opposide-1, 1)[1]
                     spectreHorse = Horse(i.y, i.x, i.team, False)
                     nearHorse = spectreHorse.availMoves(self.table)[1]
 
@@ -141,7 +141,7 @@ class Table:
                                 anss[0] = True
                         
                     for n in range(1, 10):
-                        directionKill = i.limitSide(self.table, n)[1]
+                        directionKill = i.limitSide(self, n)[1]
                         if n % 2 != 0:
                             diagonal.extend(directionKill)
                         else:
@@ -254,15 +254,44 @@ class Piece(Space):
     def availMoves(self, board):
         return [], []
 
-    def move(self, teibol, ypos, xpos):
+    def checkforcheck(self, board):
+        moves, kills = self.availMoves(board)
+        for i in moves:
+            spectreboard = copy.deepcopy(board)
+            piece = spectreboard.table[self.y][self.x]
+            if piece.team:
+                teamno = 0
+            else:
+                teamno = 1
+            piece.move(spectreboard, i[0], i[1], True)
+            if spectreboard.check()[teamno]:
+                moves.remove(i)
+
+        for i in kills:
+            spectreboard = copy.deepcopy(board)
+            piece = spectreboard.table[self.y][self.x]
+            if piece.team:
+                teamno = 0
+            else:
+                teamno = 1
+            piece.move(spectreboard, i[0], i[1], True)
+            if spectreboard.check()[teamno]:
+                kills.remove(i)
+        
+        return moves, kills
+
+    def move(self, teibol, ypos, xpos, allowIllegal=False):
+        board = teibol.table
+        if not allowIllegal:
+            moves, kills = self.checkforcheck(teibol)
+        else:
+            moves, kills = self.availMoves(teibol)
         if self.team == teibol.curteam:
-            board = teibol.table
-            moves, kills = self.availMoves(board)
             if (ypos, xpos) in moves:
                 if isinstance(self, Peon) and (ypos in [0, 7]):
-                    board[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
+                    teibol.table[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
                 else:
-                    board[ypos][xpos] = self
+                    teibol.table[ypos][xpos] = self
                 board[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
@@ -294,6 +323,7 @@ class Piece(Space):
         checkingpos = [self.y, self.x]
         spaces = []
         kills = []
+        board = board.table
 
         def checkSpace(checkingpos, speed):
             speed += -1
@@ -402,6 +432,7 @@ class Peon(Piece):
         # kills = multipostorc(kills)
 
         return moves, kills
+
 
 class Rook(Piece):
     def __init__(self, x, y, team, captured):
