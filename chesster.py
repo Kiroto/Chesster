@@ -151,29 +151,6 @@ class Table:
         if (anss[1] or anss[0]):
             pass
         return anss    
-    
-    def checkmate(self, checked):
-        for k in range(2):
-            checking = checked[k]
-            if  not checking:
-                continue
-            kteam = False
-            if k == 0:
-                kteam = True
-            for y in self.table:
-                for x in y:
-                    if x.team == kteam:
-                        possibleMoves, _ = x.availMoves(self.table)
-                        possibleMoves.extend(_)
-                        while possibleMoves:
-                            spectretable = copy.deepcopy(self)
-                            spectretable.isSpectre = True
-                            save = possibleMoves.pop()
-                            spectretable.table[x.y][x.x].move(spectretable, save[0], save[1])
-                            if not spectretable.check()[k]:
-                                return False
-            if not self.isSpectre:
-                return True
         
 class Space:
     def __init__(self, y, x):
@@ -232,22 +209,24 @@ class Piece(Space):
         else:
             board.capturedpieces[1].append(self)
 
+    def possibleMoves(self, board):
+        return [], []
+
     def availMoves(self, board):
         return [], []
 
-    def move(self, teibol, ypos, xpos, allowIllegal=False):
+    def move(self, teibol, ypos, xpos):
         board = teibol.table
         moves, kills = self.availMoves(teibol)
         if self.team == teibol.curteam:
             if (ypos, xpos) in moves:
-                if isinstance(self, Peon) and (ypos in [0, 7]):
-                    teibol.table[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
+                if isinstance(self, Peon) and ypos in [0, 7]:
+                    board[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
                 else:
-                    teibol.table[ypos][xpos] = self
+                    board[ypos][xpos] = self
                 board[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
-                teibol.switchTeam()
                 
             elif (ypos, xpos) in kills:
                 board[ypos][xpos].die(teibol)
@@ -258,12 +237,15 @@ class Piece(Space):
                 board[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
-                teibol.switchTeam()
 
-            if not teibol.isSpectre and teibol.check()[1] == True:
-                print('Black in Check')
-            if not teibol.isSpectre and teibol.check()[0] == True:
-                print('White in Check')
+            teibol.switchTeam()
+
+            checks = teibol.check()
+            if checks[1]:
+                print('Black king in Check')
+            if checks[0]:
+                print('White king in Check')
+
         elif not teibol.isSpectre:
             if self.team:
                 print("Not whites' turn.")
