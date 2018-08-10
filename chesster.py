@@ -100,7 +100,6 @@ class Table:
         return printtable
     
     def check(self):
-        kings = 0
         diagonal, direct = [], []
         anss = [False, False]
         def checkking(checklist, kingteam):
@@ -110,49 +109,44 @@ class Table:
                 checklist[0] = True
             return checklist
         
-        for k in self.table:
-            if kings == 2:
-                        break
-            for i in k:
-                if kings == 2:
-                        break
-                if isinstance(i, King):
-                    kings += 1
-                    kteam = i.team
-                    opposide = 2
-                    if kteam:
-                        opposide = 8
+        for i in [y for x in self.table for y in x]:
+            if not isinstance(i, King):
+                continue      
+            kteam = i.team
+            opposide = 2
+            if kteam:
+                opposide = 8
 
-                    nearPeon = i.limitSide(self, opposide+1, 1)[1] + i.limitSide(self, opposide-1, 1)[1]
-                    spectreHorse = Horse(i.y, i.x, i.team, False)
-                    nearHorse = spectreHorse.availMoves(self.table)[1]
+            nearPeon = i.limitSide(self, opposide+1, 1)[1] + i.limitSide(self, opposide-1, 1)[1]
+            spectreHorse = Horse(i.y, i.x, i.team, False)
+            nearHorse = spectreHorse.availMoves(self.table)[1]
 
-                    for n in nearHorse:
-                        lookedat = self.table[n[0]][n[1]]
-                        if isinstance(lookedat, Horse) and kteam != lookedat.team:
-                            checkking(anss, kteam)
+            for n in nearHorse:
+                lookedat = self.table[n[0]][n[1]]
+                if isinstance(lookedat, Horse) and kteam != lookedat.team:
+                    checkking(anss, kteam)
 
-                    for n in nearPeon:
-                        lookedat = self.table[n[0]][n[1]]
-                        if isinstance(lookedat, Peon) and kteam != lookedat.team:
-                            checkking(anss, kteam)
-                        
-                    for n in range(1, 10):
-                        directionKill = i.limitSide(self, n)[1]
-                        if n % 2 != 0:
-                            diagonal.extend(directionKill)
-                        else:
-                            direct.extend(directionKill)
-                    
-                    for n in diagonal:
-                        lookedat = self.table[n[0]][n[1]]
-                        if (isinstance(lookedat, Bishop) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
-                            checkking(anss, kteam)
+            for n in nearPeon:
+                lookedat = self.table[n[0]][n[1]]
+                if isinstance(lookedat, Peon) and kteam != lookedat.team:
+                    checkking(anss, kteam)
+                
+            for n in range(1, 10):
+                directionKill = i.limitSide(self, n)[1]
+                if n % 2 != 0:
+                    diagonal.extend(directionKill)
+                else:
+                    direct.extend(directionKill)
+            
+            for n in diagonal:
+                lookedat = self.table[n[0]][n[1]]
+                if (isinstance(lookedat, Bishop) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
+                    checkking(anss, kteam)
 
-                    for n in direct:
-                        lookedat = self.table[n[0]][n[1]]
-                        if (isinstance(lookedat, Rook) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
-                            checkking(anss, kteam)
+            for n in direct:
+                lookedat = self.table[n[0]][n[1]]
+                if (isinstance(lookedat, Rook) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
+                    checkking(anss, kteam)
 
         if (anss[1] or anss[0]) and not self.isSpectre:
             if self.checkmate(anss):
