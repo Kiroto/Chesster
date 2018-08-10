@@ -104,6 +104,13 @@ class Table:
         diagonal = []
         direct = []
         anss = [False, False]
+        def checkking(checklist, kingteam):
+            if kingteam:
+                checklist[1] = True
+            else:
+                checklist[0] = True
+            return checklist
+        
         for k in self.table:
             if kings == 2:
                         break
@@ -124,18 +131,12 @@ class Table:
                     for n in nearHorse:
                         lookedat = self.table[n[0]][n[1]]
                         if isinstance(lookedat, Horse) and kteam != lookedat.team:
-                            if not kteam:
-                                anss[1] = True
-                            else:
-                                anss[0] = True
+                            checkking(anss, kteam)
 
                     for n in nearPeon:
                         lookedat = self.table[n[0]][n[1]]
                         if isinstance(lookedat, Peon) and kteam != lookedat.team:
-                            if not kteam:
-                                anss[1] = True
-                            else:
-                                anss[0] = True
+                            checkking(anss, kteam)
                         
                     for n in range(1, 10):
                         directionKill = i.limitSide(self, n)[1]
@@ -147,18 +148,12 @@ class Table:
                     for n in diagonal:
                         lookedat = self.table[n[0]][n[1]]
                         if (isinstance(lookedat, Bishop) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
-                            if not kteam:
-                                anss[1] = True
-                            else:
-                                anss[0] = True
+                            checkking(anss, kteam)
 
                     for n in direct:
                         lookedat = self.table[n[0]][n[1]]
                         if (isinstance(lookedat, Rook) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
-                            if not kteam:
-                                anss[1] = True
-                            else:
-                                anss[0] = True
+                            checkking(anss, kteam)
 
         if (anss[1] or anss[0]) and not self.isSpectre:
             if self.checkmate(anss):
