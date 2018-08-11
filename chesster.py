@@ -117,43 +117,38 @@ class Table:
             for i in k:
                 if kings == 2:
                         break
-                if isinstance(i, King):
-                    kings += 1
-                    kteam = i.team
-                    opposide = 2
-                    if kteam:
-                        opposide = 8
+                if not isinstance(i, King):
+                    continue
+                kings += 1
+                kteam = i.team
+                opposide = 2
+                if kteam:
+                    opposide = 8
 
-                    nearPeon = i.limitSide(self, opposide+1, 1)[1] + i.limitSide(self, opposide-1, 1)[1]
-                    spectreHorse = Horse(i.y, i.x, i.team, False)
-                    nearHorse = spectreHorse.availMoves(self)[1]
+                nearPeon = i.limitSide(self, opposide+1, 1)[1] + i.limitSide(self, opposide-1, 1)[1]
+                spectreHorse = Horse(i.y, i.x, i.team, False)
+                nearHorse = spectreHorse.availMoves(self)[1]
 
-                    for n in nearHorse:
-                        lookedat = self.table[n[0]][n[1]]
-                        if isinstance(lookedat, Horse) and kteam != lookedat.team:
-                            checkking(anss, kteam)
+                for n in nearHorse:
+                    lookedat = self.table[n[0]][n[1]]
+                    if isinstance(lookedat, Horse) and kteam != lookedat.team:
+                        checkking(anss, kteam)
 
-                    for n in nearPeon:
-                        lookedat = self.table[n[0]][n[1]]
-                        if isinstance(lookedat, Peon) and kteam != lookedat.team:
-                            checkking(anss, kteam)
-                        
-                    for n in range(1, 10):
-                        directionKill = i.limitSide(self, n)[1]
-                        if n % 2 != 0:
-                            diagonal.extend(directionKill)
-                        else:
-                            direct.extend(directionKill)
+                for n in nearPeon:
+                    lookedat = self.table[n[0]][n[1]]
+                    if isinstance(lookedat, Peon) and kteam != lookedat.team:
+                        checkking(anss, kteam)
                     
-                    for n in diagonal:
+                for k in range(1, 10):
+                    directionKill = i.limitSide(self, k)[1]
+                    for n in directionKill:
                         lookedat = self.table[n[0]][n[1]]
-                        if (isinstance(lookedat, Bishop) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
-                            checkking(anss, kteam)
-
-                    for n in direct:
-                        lookedat = self.table[n[0]][n[1]]
-                        if (isinstance(lookedat, Rook) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
-                            checkking(anss, kteam)
+                        if n % 2 != 0:
+                            if (isinstance(lookedat, Bishop) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
+                                checkking(anss, kteam)  
+                        else:
+                            if (isinstance(lookedat, Bishop) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
+                                checkking(anss, kteam)
 
         if (anss[1] or anss[0]) and not self.isSpectre:
             if self.checkmate(anss):
