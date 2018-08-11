@@ -23,8 +23,7 @@ def options(usrin):
     elif usrin in commands[8]:
         print()
         print('You may issue the commands:')
-        print('resetTable, fillTable, startup, showTable, changeTeam')
-        print('what is (piece), moves (piece), move (piece) (place)')
+        print(commands)
         print()
     elif usrin in commands[1]:
         try:
