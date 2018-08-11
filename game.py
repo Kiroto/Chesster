@@ -54,8 +54,6 @@ def options(usrin):
         try:
             teibol.switchTeam()
             print('Team Changed!')
-        except chesster.InvalidTeam as e:
-            print(e)
         except Exception as e:
             print('Something went wrong. Sorry bro!')
             print(str(e))
@@ -73,7 +71,7 @@ def options(usrin):
         print()
         place = usrin[6:]
         froy, frox = chesster.rctopos(place)
-        movements, assasinations = teibol.table[froy][frox].checkforcheck(teibol)
+        movements, assasinations = teibol.table[froy][frox].availMoves(teibol)
         print('It can move to: ' + str(chesster.multipostorc(movements))[1:-1])
         print('It can kill at: ' + str(chesster.multipostorc(assasinations))[1:-1])
         # except Exception as e:
