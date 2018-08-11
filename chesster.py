@@ -429,7 +429,7 @@ class Horse(Piece):
         kills = []
 
         def checkSpace(checkingpos):
-            checkedspace = board[checkingpos[0]][checkingpos[1]]
+            checkedspace = board.table[checkingpos[0]][checkingpos[1]]
             if checkedspace.team == None:
                 spaces.append((checkedspace.y, checkedspace.x))
             elif checkedspace.team != self.team:
