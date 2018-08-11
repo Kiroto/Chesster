@@ -26,11 +26,11 @@ def multirctopos(rcs):
     return posmove
 
 class Table:
-    def __init__(self, scale=8):
-        self.table = []
-        self.curteam = True
-        self.capturedpieces = [[],[]]
-        self.isSpectre = False
+    def __init__(self, table=[][:], curteam=True, capturedpieces=[[][:],[][:]][:], isSpectre=False, scale=8):
+        self.table = table
+        self.curteam = curteam
+        self.capturedpieces = capturedpieces
+        self.isSpectre = isSpectre
     
     def switchTeam(self):
         if self.curteam:
@@ -213,11 +213,34 @@ class Piece(Space):
         return [], []
 
     def availMoves(self, board):
-        return [], []
+        posMoves = self.possibleMoves(board)
+        moves, kills = [], []
+        if self.team:
+            teamno = 0
+        else:
+            teamno = 1
+        for i in posMoves[0]:
+            spectreTable = Table(board.table[:], board.curteam, board.capturedpieces[:], True)
+            spectreTable.isSpectre = True
+            self.move(spectreTable, i[0], i[1])
+            if not spectreTable.check()[teamno]:
+                moves.append(i)
+        
+        for i in posMoves[1]:
+            spectreTable = copy.deepcopy(board)
+            spectreTable.isSpectre = True
+            self.move(spectreTable, i[0], i[1])
+            if not spectreTable.check()[teamno]:
+                kills.append(i)
+            
+        return moves, kills
 
     def move(self, teibol, ypos, xpos):
         board = teibol.table
-        moves, kills = self.availMoves(teibol)
+        if not teibol.isSpectre:
+            moves, kills = self.availMoves(teibol)
+        else:
+            moves, kills = self.possibleMoves(teibol)
         if self.team == teibol.curteam:
             if (ypos, xpos) in moves:
                 if isinstance(self, Peon) and ypos in [0, 7]:
@@ -252,7 +275,6 @@ class Piece(Space):
             else:
                 print("Not blacks' turn.")
    
-
     def limitSide(self, board, side, speed=8):
         checkingpos = [self.y, self.x]
         spaces = []
@@ -342,13 +364,12 @@ class Peon(Piece):
         if self.team:
             self.icon = 'P'
     
-    def availMoves(self, board):
+    def possibleMoves(self, board):
         kills = []
         moves = []
+        side = 2
         if self.team:
             side = 8
-        else: 
-            side = 2
         if self.y == 1 and not self.team:
             limitside = self.limitSide(board, side, 2)
             for k in limitside:
@@ -361,9 +382,6 @@ class Peon(Piece):
             moves.extend(self.limitSide(board, side, 1)[0])
         kills.extend(self.limitSide(board, side+1, 1)[1])
         kills.extend(self.limitSide(board, side-1, 1)[1])
-
-        # moves = multipostorc(moves)
-        # kills = multipostorc(kills)
 
         return moves, kills
 
