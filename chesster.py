@@ -45,6 +45,10 @@ class Table:
             for k in range(8):
                 self.table[-1].append(Space(i, k))
     
+    def mutate(self):
+        self.table = self.table[:]
+        self.capturedpieces = self.capturedpieces[:]
+
     def filltable(self):
         self.curteam = True
         for i in range(len(self.table)):
@@ -221,6 +225,7 @@ class Piece(Space):
             teamno = 1
         for i in posMoves[0]:
             spectreTable = copy.deepcopy(board)
+            spectreTable.mutate()
             print('Created spectre table')
             spectreTable.isSpectre = True
             self.move(spectreTable, i[0], i[1])
@@ -421,6 +426,7 @@ class Horse(Piece):
         kills = []
 
         def checkSpace(checkingpos):
+            print('checking space {0}'.format(checkingpos))
             checkedspace = board.table[checkingpos[0]][checkingpos[1]]
             if checkedspace.team == None:
                 spaces.append((checkedspace.y, checkedspace.x))
