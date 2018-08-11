@@ -219,7 +219,6 @@ class Piece(Space):
             teamno = 0
         else:
             teamno = 1
-        backuptable = copy.deepcopy(board)
         for i in posMoves[0]:
             spectreTable = copy.deepcopy(board)
             print('Created spectre table')
