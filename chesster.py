@@ -118,7 +118,7 @@ class Table:
                 opposide = 8
 
             spectreHorse = Horse(i.y, i.x, i.team, False)
-            nearHorse = spectreHorse.availMoves(self.table)[1]
+            nearHorse = spectreHorse.availMoves(self)[1]
             nearPeon = i.limitSide(self, opposide+1, 1)[1] + i.limitSide(self, opposide-1, 1)[1]
 
             for n in nearHorse:
@@ -219,8 +219,10 @@ class Piece(Space):
             teamno = 0
         else:
             teamno = 1
+        backuptable = copy.deepcopy(board)
         for i in posMoves[0]:
-            spectreTable = Table(board.table[:], board.curteam, board.capturedpieces[:], True)
+            spectreTable = copy.deepcopy(board)
+            print('Created spectre table')
             spectreTable.isSpectre = True
             self.move(spectreTable, i[0], i[1])
             if not spectreTable.check()[teamno]:
@@ -260,6 +262,8 @@ class Piece(Space):
                 board[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
+            
+            print('Moved {0} in {1}'.format(self.kind, teibol))
 
             teibol.switchTeam()
 
@@ -393,7 +397,7 @@ class Rook(Piece):
             self.icon = 'R'
         self.kind = 'Rook'
     
-    def availMoves(self, board):
+    def possibleMoves(self, board):
         kills = []
         moves = []
 
@@ -413,12 +417,12 @@ class Horse(Piece):
             self.icon = 'H'
         self.kind = 'Horse'        
 
-    def availMoves(self, board):
+    def possibleMoves(self, board):
         spaces = []
         kills = []
 
         def checkSpace(checkingpos):
-            checkedspace = board[checkingpos[0]][checkingpos[1]]
+            checkedspace = board.table[checkingpos[0]][checkingpos[1]]
             if checkedspace.team == None:
                 spaces.append((checkedspace.y, checkedspace.x))
             elif checkedspace.team != self.team:
@@ -458,7 +462,7 @@ class Bishop(Piece):
             self.icon = 'B'
         self.kind = 'Bishop'
 
-    def availMoves(self, board):
+    def possibleMoves(self, board):
         kills = []
         moves = []
 
@@ -478,7 +482,7 @@ class King(Piece):
             self.icon = 'K'
         self.kind = 'King'
 
-    def availMoves(self, board):
+    def possibleMoves(self, board):
         kills = []
         moves = []
 
@@ -497,7 +501,7 @@ class Queen(Piece):
             self.icon = 'Q'
         self.kind = 'Queen'
 
-    def availMoves(self, board):
+    def possibleMoves(self, board):
         kills = []
         moves = []
 
