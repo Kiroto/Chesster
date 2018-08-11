@@ -126,7 +126,7 @@ class Table:
 
                     nearPeon = i.limitSide(self, opposide+1, 1)[1] + i.limitSide(self, opposide-1, 1)[1]
                     spectreHorse = Horse(i.y, i.x, i.team, False)
-                    nearHorse = spectreHorse.availMoves(self.table)[1]
+                    nearHorse = spectreHorse.availMoves(self)[1]
 
                     for n in nearHorse:
                         lookedat = self.table[n[0]][n[1]]
