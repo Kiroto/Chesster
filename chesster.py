@@ -246,22 +246,21 @@ class Piece(Space):
     def availMoves(self, board):
         return [], []
 
-    def move(self, teibol, ypos, xpos, allowIllegal=False):
-        board = teibol.table
-        moves, kills = self.availMoves(teibol)
-        if self.team == teibol.curteam:
+    def move(self, board, ypos, xpos):
+        table = board.table
+        moves, kills = self.availMoves(board)
+        if self.team == board.curteam:
             if (ypos, xpos) in moves:
                 if isinstance(self, Peon) and (ypos in [0, 7]):
-                    teibol.table[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
+                    table[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
                 else:
-                    teibol.table[ypos][xpos] = self
-                board[self.y][self.x] = Space(self.y, self.x)
+                    table[ypos][xpos] = self
+                table[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
-                teibol.switchTeam()
                 
             elif (ypos, xpos) in kills:
-                board[ypos][xpos].die(teibol)
+                board[ypos][xpos].die(table)
                 if isinstance(self, Peon) and (ypos in [0, 7]):
                     board[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
                 else:
@@ -269,13 +268,14 @@ class Piece(Space):
                 board[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
-                teibol.switchTeam()
 
-            if not teibol.isSpectre and teibol.check()[1] == True:
+            board.switchTeam()
+
+            if not board.isSpectre and board.check()[1] == True:
                 print('Black in Check')
-            if not teibol.isSpectre and teibol.check()[0] == True:
+            if not board.isSpectre and board.check()[0] == True:
                 print('White in Check')
-        elif not teibol.isSpectre:
+        elif not board.isSpectre:
             if self.team:
                 print("Not whites' turn.")
             else:
