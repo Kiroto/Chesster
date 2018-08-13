@@ -101,8 +101,6 @@ class Table:
     
     def check(self):
         kings = 0
-        diagonal = []
-        direct = []
         anss = [False, False]
         def checkking(checklist, kingteam):
             if kingteam:
