@@ -54,36 +54,36 @@ class Table:
             if i == 0:
                 for k in range(len(self.table[i])):
                     if k == 0 or k == 7:
-                        self.table[i][k] = Rook(i, k, False, False)
+                        self.table[i][k] = Rook(k, i, False, False)
                     elif k == 1 or k == 6:
-                        self.table[i][k] = Horse(i, k, False, False)
+                        self.table[i][k] = Horse(k, i, False, False)
                     elif k == 2 or k == 5:
-                        self.table[i][k] = Bishop(i, k, False, False)
+                        self.table[i][k] = Bishop(k, i, False, False)
                     elif k == 3:
-                        self.table[i][k] = Queen(i, k, False, False)
+                        self.table[i][k] = Queen(k, i, False, False)
                     else:
-                        self.table[i][k] = King(i, k, False, False)
+                        self.table[i][k] = King(k, i, False, False)
 
             elif i == 1:
                 for k in range(len(self.table[i])):
-                    self.table[i][k] = Peon(i, k, False, False)
+                    self.table[i][k] = Peon(k, i, False, False)
             
             elif i == 6:
                 for k in range(len(self.table[i])):
-                    self.table[i][k] = Peon(i, k, True, False)
+                    self.table[i][k] = Peon(k, i, True, False)
 
             elif i == 7:
                 for k in range(len(self.table[i])):
                     if k == 0 or k == 7:
-                        self.table[i][k] = Rook(i, k, True, False)
+                        self.table[i][k] = Rook(k, i, True, False)
                     elif k == 1 or k == 6:
-                        self.table[i][k] = Horse(i, k, True, False)
+                        self.table[i][k] = Horse(k, i, True, False)
                     elif k == 2 or k == 5:
-                        self.table[i][k] = Bishop(i, k, True, False)
+                        self.table[i][k] = Bishop(k, i, True, False)
                     elif k == 3:
-                        self.table[i][k] = Queen(i, k, True, False)
+                        self.table[i][k] = Queen(k, i, True, False)
                     else:
-                        self.table[i][k] = King(i, k, True, False)
+                        self.table[i][k] = King(k, i, True, False)
 
     def showtable(self):
         newtable = []
@@ -107,24 +107,24 @@ class Table:
         anss = [False, False]
         def checkking(checklist, kingteam):
             if kingteam:
-                checklist[1] = True
-            else:
                 checklist[0] = True
+            else:
+                checklist[1] = True
             return checklist
         
         for k in self.table:
             if kings == 2:
-                        break
+                break
             for i in k:
                 if kings == 2:
-                        break
+                    break
                 if not isinstance(i, King):
                     continue
                 kings += 1
                 kteam = i.team
                 opposide = 2
                 if kteam:
-                    opposide = 8
+                   opposide = 8
 
                 nearPeon = i.limitSide(self, opposide+1, 1)[1] + i.limitSide(self, opposide-1, 1)[1]
                 spectreHorse = Horse(i.y, i.x, i.team, False)
@@ -148,15 +148,15 @@ class Table:
                             if (isinstance(lookedat, Bishop) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
                                 checkking(anss, kteam)  
                         else:
-                            if (isinstance(lookedat, Bishop) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
+                            if (isinstance(lookedat, Rook) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
                                 checkking(anss, kteam)
         return anss    
     
     def checkmate(self, team):
         if team:
-            teamno = 0
-        else:
             teamno = 1
+        else:
+            teamno = 0
         simultable = []
         for y in self.table:
             simultable.append([])
@@ -177,18 +177,27 @@ class Table:
                     simultable[-1].append(Space(x.x, x.y))
         for y in simultable:
             for x in y:
+                if x.team == team or x.team == None:
+                    continue
                 simulBoard = Table(simultable[:], True)
-                for moves in x.availMoves(simulBoard):
-                    while moves:
-                        simulBoard = Table(simultable[:], True)
-                        x.move(simulBoard, moves[0], moves[1])
-                        if not simulBoard.check()[teamno]:
-                            return False
+                for moves in x.availMoves(simulBoard)[0]:
+                    simulBoard = Table(simultable[:], True)
+                    x.move(simulBoard, moves[0], moves[1])
+                    if not simulBoard.check()[teamno]:
+                        print(str(x.kind) + ' to ' + postorc(x.y, x.x))
+                        return False
+                        
+                for moves in x.availMoves(simulBoard)[1]:
+                    simulBoard = Table(simultable[:], True)
+                    x.move(simulBoard, moves[0], moves[1])
+                    if not simulBoard.check()[teamno]:
+                        print(str(x.kind) + ' to ' + postorc(x.y, x.x))
+                        return False
         return True
                     
         
 class Space:
-    def __init__(self, y, x):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
         if (x+1) % 2 == (y+1) % 2:
@@ -250,6 +259,7 @@ class Piece(Space):
     def move(self, board, ypos, xpos):
         table = board.table
         moves, kills = self.availMoves(board)
+        
         if self.team == board.curteam:
             if (ypos, xpos) in moves:
                 if isinstance(self, Peon) and (ypos in [0, 7]):
@@ -259,6 +269,7 @@ class Piece(Space):
                 table[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
+                board.switchTeam()
                 
             elif (ypos, xpos) in kills:
                 table[ypos][xpos].die(board)
@@ -269,8 +280,7 @@ class Piece(Space):
                 table[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
-
-            board.switchTeam()
+                board.switchTeam()
 
             if not board.isSpectre and board.check()[1]:
                 print('Black in Check')
@@ -280,6 +290,7 @@ class Piece(Space):
                 print('White in Check')
                 if board.checkmate(False):
                     print('Checkmate')
+        
         elif not board.isSpectre:
             if self.team:
                 print("Not whites' turn.")
