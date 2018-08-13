@@ -143,7 +143,7 @@ class Table:
                     directionKill = i.limitSide(self, k)[1]
                     for n in directionKill:
                         lookedat = self.table[n[0]][n[1]]
-                        if n % 2 != 0:
+                        if k % 2 != 0:
                             if (isinstance(lookedat, Bishop) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
                                 checkking(anss, kteam)  
                         else:
@@ -169,7 +169,7 @@ class Table:
             for y in self.table:
                 for x in y:
                     if x.team == kteam:
-                        possibleMoves, _ = x.availMoves(self.table)
+                        possibleMoves, _ = x.availMoves(self)
                         possibleMoves.extend(_)
                         while possibleMoves:
                             spectretable = copy.deepcopy(self)
@@ -281,12 +281,12 @@ class Piece(Space):
         checkingpos = [self.y, self.x]
         spaces = []
         kills = []
-        board = board.table
+        table = board.table
 
         def checkSpace(checkingpos, speed):
             speed += -1
             cont = True
-            checkedspace = board[checkingpos[0]][checkingpos[1]]
+            checkedspace = table[checkingpos[0]][checkingpos[1]]
             if checkedspace.team == None:
                 spaces.append((checkedspace.y, checkedspace.x))
             elif checkedspace.team != self.team:
