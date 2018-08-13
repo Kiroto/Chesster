@@ -9,8 +9,10 @@ commands = [['Reset Table', 'resetTable', 'reset table', 'rt'],\
             ['changeTeam', 'change team', 'Change Team', 'ct'],\
             ['what is', 'describ', 'What is'],\
             ['moves', 'moovs', 'Moves', 'ms'],\
-            ['move', 'moov', 'Move', 'm'],
-            ['help', 'Help', 'h']]
+            ['move', 'moov', 'Move', 'm'],\
+            ['help', 'Help', 'h'],\
+            ['quickeat'],\
+            ['quickcheck']]
 def options(usrin):
     if usrin in commands[0]:
         try:
@@ -87,6 +89,16 @@ def options(usrin):
             print('Correct usage: move L# L#, where L is a letter between A and H and # is a number between 1 and 8.\n' + str(e) + ' is not recognized.')
         except IndexError as e:
             print('Did you write the position you want to move to?')
+    elif usrin in commands[9]:
+        options('move c2 c3')
+        options('move e7 e6')
+        options('move d1 a4')
+        options('move a7 a6')
+        options('move a4 a6')
+    elif usrin in commands[10]:
+        options('move c2 c3')
+        options('move d7 d6')
+        options('move d1 a4')
     print(teibol.showtable())
     if teibol.curteam:
         print("White pieces' turn")
