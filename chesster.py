@@ -255,11 +255,11 @@ class Piece(Space):
                 self.y = ypos
                 
             elif (ypos, xpos) in kills:
-                board[ypos][xpos].die(table)
+                table[ypos][xpos].die(board)
                 if isinstance(self, Peon) and (ypos in [0, 7]):
-                    board[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
+                    table[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
                 else:
-                    board[ypos][xpos] = self
+                    table[ypos][xpos] = self
                 board[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
