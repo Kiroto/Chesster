@@ -12,7 +12,8 @@ commands = [['Reset Table', 'resetTable', 'reset table', 'rt'],\
             ['move', 'moov', 'Move', 'm'],\
             ['help', 'Help', 'h'],\
             ['quickeat'],\
-            ['quickcheck']]
+            ['quickcheck'],\
+            ['quickmate']]
 def options(usrin):
     if usrin in commands[0]:
         try:
@@ -99,6 +100,11 @@ def options(usrin):
         options('move c2 c3')
         options('move d7 d6')
         options('move d1 a4')
+    elif usrin in commands[11]:
+        options('move f2 f3')
+        options('move e7 e5')
+        options('move g2 g4')
+        options('move d8 h4')
     print(teibol.showtable())
     if teibol.curteam:
         print("White pieces' turn")
