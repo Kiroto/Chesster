@@ -263,10 +263,10 @@ class Piece(Space):
         if self.team == board.curteam:
             if (ypos, xpos) in moves:
                 if isinstance(self, Peon) and (ypos in [0, 7]):
-                    table[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
+                    table[ypos][xpos] = Queen(xpos, ypos, self.team, self.captured)
                 else:
                     table[ypos][xpos] = self
-                table[self.y][self.x] = Space(self.y, self.x)
+                table[self.y][self.x] = Space(self.x, self.y)
                 self.x = xpos
                 self.y = ypos
                 board.switchTeam()
@@ -274,10 +274,10 @@ class Piece(Space):
             elif (ypos, xpos) in kills:
                 table[ypos][xpos].die(board)
                 if isinstance(self, Peon) and (ypos in [0, 7]):
-                    table[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
+                    table[ypos][xpos] = Queen(xpos, ypos, self.team, self.captured)
                 else:
                     table[ypos][xpos] = self
-                table[self.y][self.x] = Space(self.y, self.x)
+                table[self.y][self.x] = Space(self.x, self.y)
                 self.x = xpos
                 self.y = ypos
                 board.switchTeam()
@@ -311,9 +311,9 @@ class Piece(Space):
             cont = True
             checkedspace = table[checkingpos[0]][checkingpos[1]]
             if checkedspace.team == None:
-                spaces.append((checkedspace.y, checkedspace.x))
+                spaces.append((checkedspace.x, checkedspace.y))
             elif checkedspace.team != self.team:
-                kills.append((checkedspace.y, checkedspace.x))
+                kills.append((checkedspace.x, checkedspace.y))
                 cont = False
             else:
                 cont = False
@@ -449,9 +449,9 @@ class Horse(Piece):
         def checkSpace(checkingpos):
             checkedspace = board.table[checkingpos[0]][checkingpos[1]]
             if checkedspace.team == None:
-                spaces.append((checkedspace.y, checkedspace.x))
+                spaces.append((checkedspace.x, checkedspace.y))
             elif checkedspace.team != self.team:
-                kills.append((checkedspace.y, checkedspace.x))
+                kills.append((checkedspace.x, checkedspace.y))
         
         if self.y <= 5:
             if self.x >= 1:
