@@ -260,7 +260,7 @@ class Piece(Space):
                     table[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
                 else:
                     table[ypos][xpos] = self
-                board[self.y][self.x] = Space(self.y, self.x)
+                table[self.y][self.x] = Space(self.y, self.x)
                 self.x = xpos
                 self.y = ypos
 
