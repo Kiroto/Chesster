@@ -26,11 +26,14 @@ def multirctopos(rcs):
     return posmove
 
 class Table:
-    def __init__(self, scale=8):
-        self.table = []
+    def __init__(self, table=None, spectre=False, scale=8):
+        if table == None:
+            self.table = []
+        else:
+            self.table = table
         self.curteam = True
         self.capturedpieces = [[],[]]
-        self.isSpectre = False
+        self.isSpectre = spectre
     
     def switchTeam(self):
         if self.curteam:
@@ -147,37 +150,42 @@ class Table:
                         else:
                             if (isinstance(lookedat, Bishop) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
                                 checkking(anss, kteam)
-
-        if (anss[1] or anss[0]) and not self.isSpectre:
-            if self.checkmate(anss):
-                print('Checkmate')
-                self.showtable()    
-                # self.resettable()
-                # self.filltable
         return anss    
     
-    def checkmate(self, checked):
-        for k in range(2):
-            checking = checked[k]
-            if  not checking:
-                continue
-            kteam = False
-            if k == 0:
-                kteam = True
-            for y in self.table:
-                for x in y:
-                    if x.team == kteam:
-                        possibleMoves, _ = x.availMoves(self)
-                        possibleMoves.extend(_)
-                        while possibleMoves:
-                            spectretable = copy.deepcopy(self)
-                            spectretable.isSpectre = True
-                            save = possibleMoves.pop()
-                            spectretable.table[x.y][x.x].move(spectretable, save[0], save[1])
-                            if not spectretable.check()[k]:
-                                return False
-            if not self.isSpectre:
-                return True
+    def checkmate(self, team):
+        if team:
+            teamno = 0
+        else:
+            teamno = 1
+        simultable = []
+        for y in self.table:
+            simultable.append([])
+            for x in y:
+                if isinstance(x, Peon):
+                    simultable[-1].append(Peon(x.x, x.y, x.team, False))
+                elif isinstance(x, Rook):
+                    simultable[-1].append(Rook(x.x, x.y, x.team, False))
+                elif isinstance(x, Horse):
+                    simultable[-1].append(Horse(x.x, x.y, x.team, False))
+                elif isinstance(x, Bishop):
+                    simultable[-1].append(Bishop(x.x, x.y, x.team, False))
+                elif isinstance(x, Queen):
+                    simultable[-1].append(Queen(x.x, x.y, x.team, False))
+                elif isinstance(x, King):
+                    simultable[-1].append(King(x.x, x.y, x.team, False))
+                else:
+                    simultable[-1].append(Space(x.x, x.y))
+        for y in simultable:
+            for x in y:
+                simulBoard = Table(simultable[:], True)
+                for moves in x.availMoves(simulBoard):
+                    while moves:
+                        simulBoard = Table(simultable[:], True)
+                        x.move(simulBoard, moves[0], moves[1])
+                        if not simulBoard.check()[teamno]:
+                            return False
+        return True
+                    
         
 class Space:
     def __init__(self, y, x):
@@ -264,10 +272,14 @@ class Piece(Space):
 
             board.switchTeam()
 
-            if not board.isSpectre and board.check()[1] == True:
+            if not board.isSpectre and board.check()[1]:
                 print('Black in Check')
+                if board.checkmate(False):
+                    print('Checkmate')
             if not board.isSpectre and board.check()[0] == True:
                 print('White in Check')
+                if board.checkmate(False):
+                    print('Checkmate')
         elif not board.isSpectre:
             if self.team:
                 print("Not whites' turn.")
@@ -279,6 +291,8 @@ class Piece(Space):
         checkingpos = [self.y, self.x]
         spaces = []
         kills = []
+        if isinstance(board, list):
+            pass
         table = board.table
 
         def checkSpace(checkingpos, speed):
