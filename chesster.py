@@ -153,44 +153,44 @@ class Table:
         return anss    
     
     def checkmate(self, team):
-        if team:
-            teamno = 1
-        else:
-            teamno = 0
-        simultable = []
-        for y in self.table:
-            simultable.append([])
-            for x in y:
-                if isinstance(x, Peon):
-                    simultable[-1].append(Peon(x.x, x.y, x.team, False))
-                elif isinstance(x, Rook):
-                    simultable[-1].append(Rook(x.x, x.y, x.team, False))
-                elif isinstance(x, Horse):
-                    simultable[-1].append(Horse(x.x, x.y, x.team, False))
-                elif isinstance(x, Bishop):
-                    simultable[-1].append(Bishop(x.x, x.y, x.team, False))
-                elif isinstance(x, Queen):
-                    simultable[-1].append(Queen(x.x, x.y, x.team, False))
-                elif isinstance(x, King):
-                    simultable[-1].append(King(x.x, x.y, x.team, False))
-                else:
-                    simultable[-1].append(Space(x.x, x.y))
-        for y in simultable:
-            for x in y:
-                if x.team == team:
-                    continue
-                simulBoard = Table(simultable[:], True)
-                for moves in x.availMoves(simulBoard)[0]:
-                    simulBoard = Table(simultable[:], True)
-                    x.move(simulBoard, moves[0], moves[1])
-                    if not simulBoard.check()[teamno]:
-                        return False
-                for moves in x.availMoves(simulBoard)[1]:
-                    simulBoard = Table(simultable[:], True)
-                    x.move(simulBoard, moves[0], moves[1])
-                    if not simulBoard.check()[teamno]:
-                        return False
-        return True
+        # if team:
+        #     teamno = 1
+        # else:
+        #     teamno = 0
+        # simultable = []
+        # for y in self.table:
+        #     simultable.append([])
+        #     for x in y:
+        #         if isinstance(x, Peon):
+        #             simultable[-1].append(Peon(x.x, x.y, x.team, False))
+        #         elif isinstance(x, Rook):
+        #             simultable[-1].append(Rook(x.x, x.y, x.team, False))
+        #         elif isinstance(x, Horse):
+        #             simultable[-1].append(Horse(x.x, x.y, x.team, False))
+        #         elif isinstance(x, Bishop):
+        #             simultable[-1].append(Bishop(x.x, x.y, x.team, False))
+        #         elif isinstance(x, Queen):
+        #             simultable[-1].append(Queen(x.x, x.y, x.team, False))
+        #         elif isinstance(x, King):
+        #             simultable[-1].append(King(x.x, x.y, x.team, False))
+        #         else:
+        #             simultable[-1].append(Space(x.x, x.y))
+        # for y in simultable:
+        #     for x in y:
+        #         if x.team == team:
+        #             continue
+        #         simulBoard = Table(simultable[:], True)
+        #         for moves in x.availMoves(simulBoard)[0]:
+        #             simulBoard = Table(simultable[:], True)
+        #             x.move(simulBoard, moves[0], moves[1])
+        #             if not simulBoard.check()[teamno]:
+        #                 return False
+        #         for moves in x.availMoves(simulBoard)[1]:
+        #             simulBoard = Table(simultable[:], True)
+        #             x.move(simulBoard, moves[0], moves[1])
+        #             if not simulBoard.check()[teamno]:
+        #                 return False
+        return False
                     
         
 class Space:
