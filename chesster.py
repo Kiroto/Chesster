@@ -208,13 +208,16 @@ class Space:
         return ans
 
 class Piece(Space):
-    """Represents a piece of either team"""
+    """Represents a piece of either team.
+    + Has a team.
+    + Can be captured."""
     def __init__(self, x, y, team, captured):
         Space.__init__(self, x, y)
         self.team = team
         self.captured = captured
 
     def die(self, board):
+        """The piece becomes captured"""
         self.captured = True
         if self.team:
             board.capturedpieces[0].append(self)
@@ -222,14 +225,21 @@ class Piece(Space):
             board.capturedpieces[1].append(self)
 
     def availMoves(self, board):
+        """Lists available moves"""
         return [], []
 
     def move(self, board, ypos, xpos):
+        """Moves the piece.
+        If movement to-try is on the available moves, it can move.
+        If the move is a kill, it captures the piece that is in the position to move.
+        Switches teams after a sucessful move.
+        If a peon reaches the final line, transform into a queen.
+        Checks if a team is in check."""
         table = board.table
         moves, kills = self.availMoves(board)
         
-        if self.team == board.curteam:
-            if (ypos, xpos) in moves:
+        if self.team == board.curteam: # Check if the piece's team is the current team's
+            if (ypos, xpos) in moves: # Check if the move is a move, not a kill
                 if isinstance(self, Peon) and (ypos in [0, 7]):
                     table[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
                 else:
@@ -239,7 +249,7 @@ class Piece(Space):
                 self.y = ypos
                 board.switchTeam()
                 
-            elif (ypos, xpos) in kills:
+            elif (ypos, xpos) in kills: # Check if the move is a kill
                 table[ypos][xpos].die(board)
                 if isinstance(self, Peon) and (ypos in [0, 7]):
                     table[ypos][xpos] = Queen(ypos, xpos, self.team, self.captured)
@@ -263,14 +273,17 @@ class Piece(Space):
    
 
     def limitSide(self, board, side, speed=8):
-        checkingpos = [self.y, self.x]
-        spaces = []
-        kills = []
+        """Lists all the moves towards a side, determined by the numpad position.
+        Speed is how far a piece can go in the direction.
+        (2 is south, 6 is east)"""
+        checkingpos = [self.y, self.x] # Currently checked position.
+        spaces = [] # Available empty spaces you can move to.
+        kills = [] # Available spaces you can kill at.
         if isinstance(board, list):
             pass
         table = board.table
 
-        def checkSpace(checkingpos, speed):
+        def checkSpace(checkingpos, speed): # Check the selected space and reduce the speed. Append to the method variable if can move or kill. Stop on a wall or ally.
             speed += -1
             cont = True
             checkedspace = table[checkingpos[0]][checkingpos[1]]
@@ -282,7 +295,7 @@ class Piece(Space):
             else:
                 cont = False
             return cont, speed
-
+        # Check all sides
         if side == 1:
             while checkingpos[0] < 7 and checkingpos[1] > 0 and speed > 0:
                 checkingpos[0] += 1
