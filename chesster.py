@@ -32,7 +32,7 @@ class Table:
     > When curteam is True, it's the whites' turn.
     > This is true for all pieces
     Keeps track of captured pieces"""
-    def __init__(self, table=None, scale=8):
+    def __init__(self, table=None):
         """Creates the Table object.
         Can have preset tables inputed."""
         if table == None:
