@@ -30,23 +30,27 @@ class Table:
     Has a chess board (referred to as table)
     Keeps track of the current team (referred to as curteam)
     > When curteam is True, it's the whites' turn.
-    > This is true for all pieces"""
-    def __init__(self, table=None, spectre=False, scale=8):
+    > This is true for all pieces
+    Keeps track of captured pieces"""
+    def __init__(self, table=None, scale=8):
+        """Creates the Table object.
+        Can have preset tables inputed."""
         if table == None:
             self.table = []
         else:
             self.table = table
         self.curteam = True
         self.capturedpieces = [[],[]]
-        self.isSpectre = spectre
     
     def switchTeam(self):
+        """Switches the current playing side."""
         if self.curteam:
             self.curteam = False
         else:
             self.curteam = True
 
     def resettable(self):
+        """Clears the board and fills it with empty spaces."""
         self.table = []
         for i in range(8):
             self.table.append([])
@@ -54,10 +58,12 @@ class Table:
                 self.table[-1].append(Space(i, k))
     
     def filltable(self):
+        """Fills the current board with the default layout of pieces.
+        Starts with the white team."""
         self.curteam = True
         for i in range(len(self.table)):
-            if i == 0:
-                for k in range(len(self.table[i])):
+            if i == 0: # If it's the first row
+                for k in range(len(self.table[i])): # Add pieces to the row
                     if k == 0 or k == 7:
                         self.table[i][k] = Rook(i, k, False, False)
                     elif k == 1 or k == 6:
@@ -69,15 +75,15 @@ class Table:
                     else:
                         self.table[i][k] = King(i, k, False, False)
 
-            elif i == 1:
+            elif i == 1: # Second row
                 for k in range(len(self.table[i])):
                     self.table[i][k] = Peon(i, k, False, False)
             
-            elif i == 6:
+            elif i == 6: # Seventh row
                 for k in range(len(self.table[i])):
                     self.table[i][k] = Peon(i, k, True, False)
 
-            elif i == 7:
+            elif i == 7: # Eigth row
                 for k in range(len(self.table[i])):
                     if k == 0 or k == 7:
                         self.table[i][k] = Rook(i, k, True, False)
@@ -91,6 +97,9 @@ class Table:
                         self.table[i][k] = King(i, k, True, False)
 
     def showtable(self):
+        """Shows the table in it's current state.
+        Uses piece icons.
+        Represents positions and colored spaces."""
         newtable = []
         for i in self.table:
             newtable.append([])
@@ -108,6 +117,7 @@ class Table:
         return printtable
     
     def check(self):
+        """Checks wether or not the king is in check"""
         kings = 0
         anss = [False, False]
         def checkking(checklist, kingteam):
@@ -231,12 +241,12 @@ class Piece(Space):
                 self.y = ypos
                 board.switchTeam()
 
-            if not board.isSpectre and board.check()[1]:
+            if board.check()[1]:
                 print('Black in Check')
-            if not board.isSpectre and board.check()[0] == True:
+            elif board.check()[0] == True:
                 print('White in Check')
         
-        elif not board.isSpectre:
+        else:
             if self.team:
                 print("Not whites' turn.")
             else:
