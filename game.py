@@ -24,7 +24,7 @@ def options(usrin):
             print('Something went wrong. Sorry bro!')
             print(str(e))
     elif usrin in commands[8]:
-        print('\nYou may issue the commands:\n > reset table | sets the table back to the beggining of the game.\
+        print('\nYou may issue the commands (or exit):\n > reset table | sets the table back to the beggining of the game.\
                                             \n > what is X#  | shows information about a tile.\
                                             \n > moves X#    | shows available moves for a piece.\
                                             \n > move X# X#  | moves a piece, if it can move to that tile.\
