@@ -410,6 +410,8 @@ class Rook(Piece):
         return moves, kills         
 
 class Horse(Piece):
+    """Represents a horse (knight) of a team.
+    + Has available moves with horse (knight) rules."""
     def __init__(self, x, y, team, captured):
         Piece.__init__(self, x, y, team, captured)
         self.icon = 'h'
@@ -421,13 +423,13 @@ class Horse(Piece):
         spaces = []
         kills = []
 
-        def checkSpace(checkingpos):
+        def checkSpace(checkingpos): # Check the space selected
             checkedspace = board.table[checkingpos[0]][checkingpos[1]]
             if checkedspace.team == None:
                 spaces.append((checkedspace.y, checkedspace.x))
             elif checkedspace.team != self.team:
                 kills.append((checkedspace.y, checkedspace.x))
-        
+        # Horse's moving rules.
         if self.y <= 5:
             if self.x >= 1:
                 checkSpace([self.y +2, self.x-1])
