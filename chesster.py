@@ -222,18 +222,6 @@ class Space:
             if self.team:
                 team = 'White'
             ans += " It belongs to the " + team + " team."
-            # if table != None:
-            #     moves, kills = self.availMoves(table)
-            #     rcmove = []
-            #     rckills = []
-            #     for i in moves:
-            #         rcmove.append(postorc(i[0], i[1]))
-            #     for i in kills:
-            #         rckills.append(postorc(i[0], i[1]))
-            #     if rcmove != []:
-            #         ans += ' It can move to ' + str(rcmove)[1:-1] + '.'
-            #     if rckills != []:
-            #         ans += ' It can kill at ' + str(rckills)[1:-1] + '.'
         return ans
 
 class Piece(Space):
