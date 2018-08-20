@@ -224,10 +224,6 @@ class Piece(Space):
         else:
             board.capturedpieces[1].append(self)
 
-    def availMoves(self, board):
-        """Lists available moves"""
-        return [], []
-
     def move(self, board, ypos, xpos):
         """Moves the piece.
         If movement to-try is on the available moves, it can move.
@@ -279,8 +275,6 @@ class Piece(Space):
         checkingpos = [self.y, self.x] # Currently checked position.
         spaces = [] # Available empty spaces you can move to.
         kills = [] # Available spaces you can kill at.
-        if isinstance(board, list):
-            pass
         table = board.table
 
         def checkSpace(checkingpos, speed): # Check the selected space and reduce the speed. Append to the method variable if can move or kill. Stop on a wall or ally.
