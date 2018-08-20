@@ -39,7 +39,7 @@ class Table:
             self.table = []
         else:
             self.table = table
-        self.curteam = True
+        self.curteam = True # Current team. If True, it's white team's turn.
         self.capturedpieces = [[],[]]
     
     def switchTeam(self):
@@ -106,7 +106,6 @@ class Table:
             for k in i:
                 newtable[-1].append(k.icon)
         printtable = ''
-        # printtable = '+' + '-+' * 7 + '-+\n'
         for i in range(len(newtable)):
             printtable += str((i+1)*-1 + 9) + '|'
             for k in range(len(newtable[i])):
