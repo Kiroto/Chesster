@@ -353,32 +353,34 @@ class Piece(Space):
         return spaces, kills
 
 class Peon(Piece):
+    """Represents a peon of a team.
+    + Has available moves with peon rules."""
     def __init__(self, x, y, team, captured):
         Piece.__init__(self, x, y, team, captured)
         self.kind = 'Peon'
-        self.icon = 'p'
+        self.icon = 'p' # Lowercase pieces are black
         if self.team:
-            self.icon = 'P'
+            self.icon = 'P' # Uppercase pieces are white
     
     def availMoves(self, board):
         kills = []
         moves = []
-        if self.team:
+        if self.team: # If on the white team, it moves to the north, 8.
             side = 8
-        else: 
+        else: # Else it moves to the south, 2
             side = 2
-        if self.y == 1 and not self.team:
+        if self.y == 1 and not self.team: # If black's first move, can move twice
             limitside = self.limitSide(board, side, 2)
             for k in limitside:
                 moves.extend(k)
-        elif self.y == 6 and self.team:
+        elif self.y == 6 and self.team: # If whites' first move, can move twice
             limitside = self.limitSide(board, side, 2)
             for k in limitside:
                 moves.extend(k)
         else:
             moves.extend(self.limitSide(board, side, 1)[0])
-        kills.extend(self.limitSide(board, side+1, 1)[1])
-        kills.extend(self.limitSide(board, side-1, 1)[1])
+        kills.extend(self.limitSide(board, side+1, 1)[1]) # Check both sides
+        kills.extend(self.limitSide(board, side-1, 1)[1]) # And look for a kill
 
         # moves = multipostorc(moves)
         # kills = multipostorc(kills)
