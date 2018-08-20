@@ -388,6 +388,8 @@ class Peon(Piece):
         return moves, kills
 
 class Rook(Piece):
+    """Represents a peon of a team.
+    + Has available moves with rook rules."""
     def __init__(self, x, y, team, captured):
         Piece.__init__(self, x, y, team, captured)
         self.icon = 'r'
@@ -400,10 +402,10 @@ class Rook(Piece):
         moves = []
 
         for i in range(1, 10):
-            if i % 2 == 0:
-                sidelimit = self.limitSide(board, i)
-                moves.extend(sidelimit[0])
-                kills.extend(sidelimit[1])
+            if i % 2 == 0: # If not a diagonal
+                sidelimit = self.limitSide(board, i) 
+                moves.extend(sidelimit[0]) # Add the moves found in a straight line
+                kills.extend(sidelimit[1]) # Add the kills found in a straight line
 
         return moves, kills         
 
