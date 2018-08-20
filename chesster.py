@@ -388,7 +388,7 @@ class Peon(Piece):
         return moves, kills
 
 class Rook(Piece):
-    """Represents a peon of a team.
+    """Represents a rook of a team.
     + Has available moves with rook rules."""
     def __init__(self, x, y, team, captured):
         Piece.__init__(self, x, y, team, captured)
