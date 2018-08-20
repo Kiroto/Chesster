@@ -3,17 +3,10 @@ teibol = chesster.Table()
 teibol.resettable()
 teibol.filltable()
 commands = [['Reset Table', 'resetTable', 'reset table', 'rt'],\
-            ['Fill Table', 'fill table', 'fillTable', 'ft'],\
-            ['startup', 'su'],\
-            ['showTable', 'Show Table', 'show table', 'st'],\
-            ['changeTeam', 'change team', 'Change Team', 'ct'],\
             ['what is', 'describ', 'What is'],\
             ['moves', 'moovs', 'Moves', 'ms'],\
             ['move', 'moov', 'Move', 'm'],\
-            ['help', 'Help', 'h'],\
-            ['quickeat'],\
-            ['quickcheck'],\
-            ['quickmate']]
+            ['help', 'Help', 'h']]
 def options(usrin):
     if usrin in commands[0]:
         try:
@@ -23,14 +16,14 @@ def options(usrin):
         except Exception as e:
             print('Something went wrong. Sorry bro!')
             print(str(e))
-    elif usrin in commands[8]:
+    elif usrin in commands[4]:
         print('\nYou may issue the commands (or exit):\n > reset table | sets the table back to the beggining of the game.\
                                             \n > what is X#  | shows information about a tile.\
                                             \n > moves X#    | shows available moves for a piece.\
                                             \n > move X# X#  | moves a piece, if it can move to that tile.\
                                             \n > help        | shows this information.\
                                             ')
-    elif usrin[:7] in commands[5] or usrin[:usrin.find(' ')] in commands[5]:
+    elif usrin[:7] in commands[1] or usrin[:usrin.find(' ')] in commands[1]:
         try:
             print()
             place = usrin[8:]
@@ -39,14 +32,14 @@ def options(usrin):
         except Exception as e:
             print('Something went wrong. Sorry bro!')
             print(str(e))
-    elif usrin[:usrin.find(' ')] in commands[6]: # Ex input: moves A2
+    elif usrin[:usrin.find(' ')] in commands[2]: # Ex input: moves A2
         print()
         place = usrin[6:]
         froy, frox = chesster.rctopos(place)
         movements, assasinations = teibol.table[froy][frox].availMoves(teibol)
         print('It can move to: ' + str(chesster.multipostorc(movements))[1:-1])
         print('It can kill at: ' + str(chesster.multipostorc(assasinations))[1:-1])
-    elif usrin[:usrin.find(' ')] in commands[7]: # move A2 A4
+    elif usrin[:usrin.find(' ')] in commands[3]: # move A2 A4
         try:
             spacePos = usrin.find(' ')
             piece = chesster.rctopos(usrin[spacePos+1:spacePos+3])
