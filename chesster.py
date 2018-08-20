@@ -30,7 +30,8 @@ class Table:
     Has a chess board (referred to as table)
     Keeps track of the current team (referred to as curteam)
     > When curteam is True, it's the whites' turn.
-    > This is true for all pieces
+    > This is true for all pieces.
+    > The white team is the one on the bottom side.
     Keeps track of captured pieces"""
     def __init__(self, table=None):
         """Creates the Table object.
@@ -104,22 +105,22 @@ class Table:
         for i in self.table:
             newtable.append([])
             for k in i:
-                newtable[-1].append(k.icon)
-        printtable = ''
+                newtable[-1].append(k.icon) # Gets all the icons and store them.
+        printtable = '' # Represents the table to be printed
         for i in range(len(newtable)):
-            printtable += str((i+1)*-1 + 9) + '|'
+            printtable += str((i+1)*-1 + 9) + '|' # Add the current row's number and a dividing line
             for k in range(len(newtable[i])):
-                printtable += newtable[i][k] + ' '
+                printtable += newtable[i][k] + ' ' # Add the icon of that position and an empty space
             printtable += '\n'
-        printtable += '-+---------------\n |A B C D E F G H'
-            # printtable += '|\n+' + '-+' * 7 + '-+\n'
+        printtable += '-+---------------\n |A B C D E F G H' # Add the column letters
+
         return printtable
     
     def check(self):
         """Checks wether or not the king is in check"""
-        kings = 0
-        anss = [False, False]
-        def checkking(checklist, kingteam):
+        kings = 0 # Count the kings you've found
+        anss = [False, False] # [White king in check?, Black king in check?]
+        def checkking(checklist, kingteam): # Quickly update a king's in-check status.
             if kingteam:
                 checklist[1] = True
             else:
@@ -127,46 +128,53 @@ class Table:
             return checklist
         
         for k in self.table:
-            if kings == 2:
+            if kings == 2: # Stop if you've found both kings
                 break
             for i in k:
-                if kings == 2:
+                if kings == 2: # Stop if you've found both kings
                     break
-                if not isinstance(i, King):
+                if not isinstance(i, King): # If you didn't find a king, do nothing.
                     continue
                 kings += 1
-                kteam = i.team
-                opposide = 2
+                kteam = i.team # The king's team is the team of the piece we're checking.
+                opposide = 2 # Opposite side. Check your numpad.
                 if kteam:
                    opposide = 8
 
-                nearPeon = i.limitSide(self, opposide+1, 1)[1] + i.limitSide(self, opposide-1, 1)[1]
-                spectreHorse = Horse(i.y, i.x, i.team, False)
+                nearPeon = i.limitSide(self, opposide+1, 1)[1] + i.limitSide(self, opposide-1, 1)[1] # Checks if there is a peon nearby
+                spectreHorse = Horse(i.y, i.x, i.team, False) # Makes a false horse to test for it's moves
                 nearHorse = spectreHorse.availMoves(self)[1]
 
-                for n in nearHorse:
+                # lookedat refers to the piece being examined
+
+                for n in nearHorse: # Check if there is a horse nearby
                     lookedat = self.table[n[0]][n[1]]
                     if isinstance(lookedat, Horse) and kteam != lookedat.team:
                         checkking(anss, kteam)
 
-                for n in nearPeon:
+                for n in nearPeon: # Check if there is a peon nearby
                     lookedat = self.table[n[0]][n[1]]
                     if isinstance(lookedat, Peon) and kteam != lookedat.team:
                         checkking(anss, kteam)
                     
-                for k in range(1, 10):
+                for k in range(1, 10): # Check for the rest of the pieces
                     directionKill = i.limitSide(self, k)[1]
                     for n in directionKill:
                         lookedat = self.table[n[0]][n[1]]
-                        if k % 2 != 0:
+                        if k % 2 != 0: # If it's a diagonal moving piece, make sure it's a queen or a bishop and that it's of the opposite team
                             if (isinstance(lookedat, Bishop) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
                                 checkking(anss, kteam)  
-                        else:
+                        else: # Else make sure it's a queen or a rook and that it's of the opposite team
                             if (isinstance(lookedat, Rook) or isinstance(lookedat, Queen)) and kteam != lookedat.team:
                                 checkking(anss, kteam)
         return anss     
 
 class Space:
+    """Defines an empty space.
+    Keeps track of it's position y and x.
+    Keeps track of it's own team (team).
+    Has an icon (icon).
+    Has a string representation."""
     def __init__(self, y, x):
         self.x = x
         self.y = y
@@ -178,12 +186,14 @@ class Space:
         self.kind = 'Empty'
 
     def availMoves(self, board):
+        """Available moves of an empty space"""
         return [], []
     
     def move(self, board, xpos, ypos):
         print("You can't move an empty space!")
 
     def descr(self, table=None):
+        """Gives a piece description, for all pieces."""
         attribs = vars(self)
         ans = 'This is a(n) ' + self.kind + ', and thus it is represented by ' + self.icon + '.\n'
         if 'x' in attribs and 'y' in attribs:
