@@ -363,8 +363,8 @@ class Peon(Piece):
             self.icon = 'P' # Uppercase pieces are white
     
     def availMoves(self, board):
-        kills = []
-        moves = []
+        kills, moves = [], []
+        
         if self.team: # If on the white team, it moves to the north, 8.
             side = 8
         else: # Else it moves to the south, 2
@@ -398,8 +398,7 @@ class Rook(Piece):
         self.kind = 'Rook'
     
     def availMoves(self, board):
-        kills = []
-        moves = []
+        kills, moves = [], []
 
         for i in range(1, 10):
             if i % 2 == 0: # If not a diagonal
@@ -420,8 +419,7 @@ class Horse(Piece):
         self.kind = 'Horse'        
 
     def availMoves(self, board):
-        spaces = []
-        kills = []
+        spaces, kills = [], []
 
         def checkSpace(checkingpos): # Check the space selected
             checkedspace = board.table[checkingpos[0]][checkingpos[1]]
@@ -467,8 +465,7 @@ class Bishop(Piece):
         self.kind = 'Bishop'
 
     def availMoves(self, board):
-        kills = []
-        moves = []
+        kills, moves = [], []
 
         for i in range(1, 10):
             if i % 2 != 0: # If the move would be diagonal
@@ -489,8 +486,7 @@ class King(Piece):
         self.kind = 'King'
 
     def availMoves(self, board):
-        kills = []
-        moves = []
+        kills, moves = [], []
 
         for i in range(1, 10):
             sidelimit = self.limitSide(board, i, 1) # Check all sides and add them to the move/kills
@@ -510,8 +506,7 @@ class Queen(Piece):
         self.kind = 'Queen'
 
     def availMoves(self, board):
-        kills = []
-        moves = []
+        kills, moves = [], []
 
         for i in range(1, 10):
             sidelimit = self.limitSide(board, i) # Check all sides and add them to the move/kills
