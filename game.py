@@ -18,44 +18,25 @@ def options(usrin):
     if usrin in commands[0]:
         try:
             teibol.resettable()
-            print()
+            teibol.filltable()
             print('Table Reset!')
         except Exception as e:
             print('Something went wrong. Sorry bro!')
             print(str(e))
     elif usrin in commands[8]:
-        print()
-        print('You may issue the commands:')
-        print(commands)
-        print()
-    elif usrin in commands[1]:
-        try:
-            teibol.filltable()
-            print()
-            print('Table Filled!')
-        except Exception as e:
-            print('Something went wrong. Sorry bro!')
-            print(str(e))
-    elif usrin in commands[2]:
-        try:
-            teibol.resettable()
-            teibol.filltable()
-        except Exception as e:
-            print('Something went wrong. Sorry bro!')
-            print(str(e))
+        print('\nYou may issue the commands:\n > reset table | sets the table back to the beggining of the game.\
+                                            \n > show table  | shows the table\'s current state.\
+                                            \n > what is X#  | shows information about a tile.\
+                                            \n > moves X#    | shows available moves for a piece.\
+                                            \n > move X# X#  | moves a piece, if it can move to that tile.\
+                                            \n > help        | shows this information.\
+                                            ')
     elif usrin in commands[3]:
         try:
             print()
             print(teibol.showtable())
             print()
             print('Table Shown!')
-        except Exception as e:
-            print('Something went wrong. Sorry bro!')
-            print(str(e))
-    elif usrin in commands[4]:
-        try:
-            teibol.switchTeam()
-            print('Team Changed!')
         except Exception as e:
             print('Something went wrong. Sorry bro!')
             print(str(e))
