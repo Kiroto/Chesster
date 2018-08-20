@@ -457,6 +457,8 @@ class Horse(Piece):
         return spaces, kills         
 
 class Bishop(Piece):
+    """Represents a bishop of a team.
+    + Has available moves with bishop rules."""
     def __init__(self, x, y, team, captured):
         Piece.__init__(self, x, y, team, captured)
         self.icon = 'b'
@@ -469,14 +471,16 @@ class Bishop(Piece):
         moves = []
 
         for i in range(1, 10):
-            if i % 2 != 0:
+            if i % 2 != 0: # If the move would be diagonal
                 sidelimit = self.limitSide(board, i)
-                moves.extend(sidelimit[0])
-                kills.extend(sidelimit[1])
+                moves.extend(sidelimit[0]) # Add the moves found in the diagonal
+                kills.extend(sidelimit[1]) # Add the kills found in the diagonal
 
         return moves, kills
 
 class King(Piece):
+    """Represents a king of a team.
+    + Has available moves with king rules."""
     def __init__(self, x, y, team, captured):
         Piece.__init__(self, x, y, team, captured)
         self.icon = 'k'
@@ -489,13 +493,15 @@ class King(Piece):
         moves = []
 
         for i in range(1, 10):
-            sidelimit = self.limitSide(board, i, 1)
+            sidelimit = self.limitSide(board, i, 1) # Check all sides and add them to the move/kills
             moves.extend(sidelimit[0])
             kills.extend(sidelimit[1])
 
         return moves, kills
 
 class Queen(Piece):
+    """Represents a queen of a team.
+    + Has available moves with queen rules."""
     def __init__(self, x, y, team, captured):
         Piece.__init__(self, x, y, team, captured)
         self.icon = 'q'
@@ -508,9 +514,8 @@ class Queen(Piece):
         moves = []
 
         for i in range(1, 10):
-            sidelimit = self.limitSide(board, i)
-            if sidelimit[0] not in moves or sidelimit[1] not in kills:
-                moves.extend(sidelimit[0])
-                kills.extend(sidelimit[1])
+            sidelimit = self.limitSide(board, i) # Check all sides and add them to the move/kills
+            moves.extend(sidelimit[0])
+            kills.extend(sidelimit[1])
 
         return moves, kills         
