@@ -1,6 +1,6 @@
 import copy
 
-def rctopos(rc): # Row Column
+def rctopos(rc): # Transforms Row Column (rc) notation to Pos (y, x) notation.
     columnID = {'a': 0, 'b': 1, 'c': 2, 'd':3, 'e':4, 'f': 5, 'g': 6, 'h': 7,\
         'A': 0, 'B': 1, 'C': 2, 'D':3, 'E':4, 'F': 5, 'G': 6, 'H': 7}
     rowID = {'1': 7, '2': 6, '3': 5, '4': 4, '5': 3, '6': 2, '7': 1, '8': 0}
@@ -8,24 +8,29 @@ def rctopos(rc): # Row Column
     ypos = rowID[rc[1]]
     return ypos, xpos
 
-def postorc(posy, posx):
+def postorc(posy, posx): # Transforms Position (posy, posx) notation to RC (X#) notation.
     posyID = {7: '1', 6: '2', 5: '3', 4: '4', 3: '5', 2: '6', 1: '7', 0: '8'}
     posxID = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H'}
     return posxID[posx] + posyID[posy]
 
-def multipostorc(poss):
+def multipostorc(poss): # Transforms many Position [(y, x), ...] notation to many RC [(X#), ...] notation.
     rcmove = []
     for i in poss:
         rcmove.append(postorc(i[0], i[1]))
     return rcmove
 
-def multirctopos(rcs):
+def multirctopos(rcs): # Transforms many Row Column ['X#', ...] notation to many Pos [(posy, posx), ...] notation.
     posmove = []
     for i in rcs:
         posmove.append(rctopos(i))
     return posmove
 
 class Table:
+    """Represents a chess Table.
+    Has a chess board (referred to as table)
+    Keeps track of the current team (referred to as curteam)
+    > When curteam is True, it's the whites' turn.
+    > This is true for all pieces"""
     def __init__(self, table=None, spectre=False, scale=8):
         if table == None:
             self.table = []
