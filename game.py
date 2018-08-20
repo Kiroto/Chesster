@@ -25,21 +25,11 @@ def options(usrin):
             print(str(e))
     elif usrin in commands[8]:
         print('\nYou may issue the commands:\n > reset table | sets the table back to the beggining of the game.\
-                                            \n > show table  | shows the table\'s current state.\
                                             \n > what is X#  | shows information about a tile.\
                                             \n > moves X#    | shows available moves for a piece.\
                                             \n > move X# X#  | moves a piece, if it can move to that tile.\
                                             \n > help        | shows this information.\
                                             ')
-    elif usrin in commands[3]:
-        try:
-            print()
-            print(teibol.showtable())
-            print()
-            print('Table Shown!')
-        except Exception as e:
-            print('Something went wrong. Sorry bro!')
-            print(str(e))
     elif usrin[:7] in commands[5] or usrin[:usrin.find(' ')] in commands[5]:
         try:
             print()
